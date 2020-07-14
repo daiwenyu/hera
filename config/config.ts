@@ -1,6 +1,7 @@
 import {defineConfig} from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
+import routes from "./routes";
 
 const {REACT_APP_ENV} = process.env;
 export default defineConfig({
@@ -17,46 +18,7 @@ export default defineConfig({
   dynamicImport: {
     loading: '@/components/PageLoading/index',
   },
-  routes: [
-    {
-      path: '/',
-      component: '../layouts/SecurityLayout',
-      routes: [
-        {
-          path: '/',
-          component: '../layouts/BasicLayout',
-          authority: ['admin', 'user'],
-          routes: [
-            {
-              path: '/',
-              redirect: '/welcome',
-            },
-            {
-              path: '/welcome',
-              name: 'welcome',
-              icon: 'dashboard',
-              component: './Welcome',
-            },
-            {
-              name: 'list.table-list',
-              icon: 'dashboard',
-              path: '/list',
-              component: './ListTableList',
-            },
-            {
-              component: './404',
-            },
-          ],
-        },
-        {
-          component: './404',
-        },
-      ],
-    },
-    {
-      component: './404',
-    },
-  ],
+  routes,
   theme: {
     'primary-color': defaultSettings.primaryColor,
   },
