@@ -1,9 +1,7 @@
-import { stringify } from 'querystring';
-import { history, Reducer, Effect } from 'umi';
-
-import { fakeAccountLogin } from '@/services/login';
-import { setAuthority } from '@/utils/authority';
-import { getPageQuery } from '@/utils/utils';
+import {stringify} from 'querystring';
+import {history, Reducer, Effect} from 'umi';
+import {setAuthority} from '@/utils/authority';
+import {getPageQuery} from '@/utils/utils';
 
 export interface StateType {
   status?: 'ok' | 'error';
@@ -31,8 +29,11 @@ const Model: LoginModelType = {
   },
 
   effects: {
-    *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
+    * login({payload}, {call, put}) {
+      // const response = yield call(fakeAccountLogin, payload);
+      const response = {
+        status: 'ok'
+      };
       yield put({
         type: 'changeLoginStatus',
         payload: response,
@@ -41,7 +42,7 @@ const Model: LoginModelType = {
       if (response.status === 'ok') {
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
-        let { redirect } = params as { redirect: string };
+        let {redirect} = params as { redirect: string };
         if (redirect) {
           const redirectUrlParams = new URL(redirect);
           if (redirectUrlParams.origin === urlParams.origin) {
@@ -59,7 +60,7 @@ const Model: LoginModelType = {
     },
 
     logout() {
-      const { redirect } = getPageQuery();
+      const {redirect} = getPageQuery();
       // Note: There may be security issues, please note
       if (window.location.pathname !== '/user/login' && !redirect) {
         history.replace({
@@ -73,7 +74,7 @@ const Model: LoginModelType = {
   },
 
   reducers: {
-    changeLoginStatus(state, { payload }) {
+    changeLoginStatus(state, {payload}) {
       setAuthority(payload.currentAuthority);
       return {
         ...state,
