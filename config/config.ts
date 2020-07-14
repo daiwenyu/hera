@@ -35,12 +35,12 @@ export default defineConfig({
             {
               path: '/welcome',
               name: 'welcome',
-              icon: 'smile',
+              icon: 'dashboard',
               component: './Welcome',
             },
             {
               name: 'list.table-list',
-              icon: 'table',
+              icon: 'dashboard',
               path: '/list',
               component: './ListTableList',
             },
