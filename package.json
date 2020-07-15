@@ -4,9 +4,8 @@
   "private": true,
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
-    "start:dev": "cross-env REACT_APP_ENV=dev MOCK=none umi dev",
     "start:no-mock": "cross-env MOCK=none umi dev",
-    "start": "umi dev",
+    "start": "cross-env REACT_APP_ENV=dev umi dev",
     "build": "umi build",
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",

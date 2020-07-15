@@ -16,12 +16,12 @@ const noMatch = (
   <Result
     status={403}
     title="403"
-    subTitle="Sorry, you are not authorized to access this page."
-    extra={
-      <Button type="primary">
-        <Link to="/user/login">Go Login</Link>
-      </Button>
-    }
+    subTitle="对不起，您无权访问此页面。"
+    // extra={
+    //   <Button type="primary">
+    //     <Link to="/user/login">Go Login</Link>
+    //   </Button>
+    // }
   />
 );
 
@@ -45,13 +45,16 @@ export type BasicLayoutContext = { [K in 'location']: BasicLayoutProps[K] } & {
  * use Authorized check all menu item
  */
 
-const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] => menuList.map((item) => {
-  const localItem = {
-    ...item,
-    children: item.children ? menuDataRender(item.children) : undefined,
-  };
-  return Authorized.check(item.authority, localItem, null) as MenuDataItem;
-});
+const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] => {
+  console.log(menuList);
+  return menuList.map((item) => {
+    const localItem = {
+      ...item,
+      children: item.children ? menuDataRender(item.children) : undefined,
+    };
+    return Authorized.check(item.authority, localItem, null) as MenuDataItem;
+  });
+}
 
 const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   const {

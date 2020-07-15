@@ -1,8 +1,23 @@
 import {PageContainer} from "@ant-design/pro-layout";
-import React from "react";
+import React, {useEffect} from "react";
 import {Card} from "antd";
+import {connect} from "umi";
+import {SystemModelState} from "@/models/connect";
+import {Dispatch} from "@@/plugin-dva/connect";
 
-function SystemAdmin() {
+export interface SystemAdminProps {
+  dispatch: Dispatch;
+}
+
+function SystemAdmin(props: SystemAdminProps) {
+  const {dispatch} = props;
+
+  useEffect(() => {
+    dispatch({
+      type: 'system/getMenus'
+    });
+  }, []);
+
   return (
     <PageContainer>
       <Card title="菜单设置">
@@ -12,4 +27,4 @@ function SystemAdmin() {
   );
 }
 
-export default SystemAdmin;
+export default connect(({system}: SystemModelState) => ({system}))(SystemAdmin);
