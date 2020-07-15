@@ -10,20 +10,20 @@ export default [
         routes: [
           {
             path: '/',
-            redirect: '/welcome',
+            redirect: '/SystemAdmin',
           },
-          {
-            path: '/welcome',
-            name: 'welcome',
-            icon: 'dashboard',
-            component: './Welcome',
-          },
-          {
-            name: 'list.table-list',
-            icon: 'dashboard',
-            path: '/list',
-            component: './ListTableList',
-          },
+          // {
+          //   path: '/welcome',
+          //   name: 'welcome',
+          //   icon: 'dashboard',
+          //   component: './Welcome',
+          // },
+          // {
+          //   name: 'list.table-list',
+          //   icon: 'dashboard',
+          //   path: '/list',
+          //   component: './ListTableList',
+          // },
           {
             name: 'system.admin',
             icon: 'tool',
