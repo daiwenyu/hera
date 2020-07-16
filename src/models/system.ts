@@ -20,7 +20,7 @@ const SettingModel: SystemModelType = {
   effects: {
     * getMenus(_, {call}) {
       const response = yield call(getMenus);
-      console.log(response)
+      return response;
     }
   },
   reducers: {
