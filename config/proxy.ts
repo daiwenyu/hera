@@ -1,21 +1,21 @@
 export default {
   dev: {
-    '/api/': {
-      target: 'https://preview.pro.ant.design',
+    '/api': {
+      target: 'http://localhost:7001',
       changeOrigin: true,
       pathRewrite: {'^': ''},
     },
   },
   test: {
     '/api/': {
-      target: 'https://preview.pro.ant.design',
+      target: '',
       changeOrigin: true,
       pathRewrite: {'^': ''},
     },
   },
   pre: {
     '/api/': {
-      target: 'your pre url',
+      target: '',
       changeOrigin: true,
       pathRewrite: {'^': ''},
     },

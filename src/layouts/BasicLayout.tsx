@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect} from 'react';
 import ProLayout, {
   MenuDataItem,
   BasicLayoutProps as ProLayoutProps,
   Settings,
 } from '@ant-design/pro-layout';
-import { Link, useIntl, connect, Dispatch, history } from 'umi';
-import { Result, Button } from 'antd';
+import {Link, useIntl, connect, Dispatch, history} from 'umi';
+import {Result, Button} from 'antd';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
-import { ConnectState } from '@/models/connect';
-import { getAuthorityFromRouter } from '@/utils/utils';
+import {ConnectState} from '@/models/connect';
+import {getAuthorityFromRouter} from '@/utils/utils';
 import logo from '../assets/logo.png';
 
 const noMatch = (
@@ -17,11 +17,11 @@ const noMatch = (
     status={403}
     title="403"
     subTitle="对不起，您无权访问此页面。"
-  // extra={
-  //   <Button type="primary">
-  //     <Link to="/user/login">Go Login</Link>
-  //   </Button>
-  // }
+    // extra={
+    //   <Button type="primary">
+    //     <Link to="/user/login">Go Login</Link>
+    //   </Button>
+    // }
   />
 );
 
@@ -54,9 +54,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       pathname: '/',
     },
   } = props;
-  const [menuData, setMenuData] = useState([]);
   const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] => {
-    console.log(menuList);
     // TODO 菜单过滤or权限控制
     return menuList.map((item) => {
       const localItem = {
@@ -70,12 +68,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     if (dispatch) {
       dispatch({
         type: 'user/fetchCurrent',
-      });
-
-      dispatch({
-        type: 'system/getMenus',
-      }).then((data) => {
-        setMenuData(data || []);
       });
     }
   }, []);
@@ -95,7 +87,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   const authorized = getAuthorityFromRouter(props.route.routes, location.pathname || '/') || {
     authority: undefined,
   };
-  const { formatMessage } = useIntl();
+  const {formatMessage} = useIntl();
 
   return (
     <ProLayout
@@ -112,7 +104,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       breadcrumbRender={(routers = []) => [
         {
           path: '/',
-          breadcrumbName: formatMessage({ id: 'menu.home' }),
+          breadcrumbName: formatMessage({id: 'menu.home'}),
         },
         ...routers,
       ]}
@@ -121,12 +113,12 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
         return first ? (
           <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
         ) : (
-            <span>{route.breadcrumbName}</span>
-          );
+          <span>{route.breadcrumbName}</span>
+        );
       }}
       footerRender={undefined}
       menuDataRender={menuDataRender}
-      rightContentRender={() => <RightContent />}
+      rightContentRender={() => <RightContent/>}
       {...props}
       {...settings}
     >
@@ -137,7 +129,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   );
 };
 
-export default connect(({ global, settings }: ConnectState) => ({
+export default connect(({global, settings}: ConnectState) => ({
   collapsed: global.collapsed,
   settings,
 }))(BasicLayout);
