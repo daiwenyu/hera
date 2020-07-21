@@ -1,6 +1,6 @@
 import {PageContainer} from "@ant-design/pro-layout";
 import React, {useEffect, useState} from "react";
-import {Card, Row, Col, Menu, Button, Modal, Form, Input, TreeSelect, Divider, List} from "antd";
+import {Card, Row, Col, Menu, Button, Modal, Form, Input, TreeSelect, Divider, List, Tree} from "antd";
 import {connect} from "umi";
 import {SystemModelState} from "@/models/connect";
 import {Dispatch} from "@@/plugin-dva/connect";
@@ -39,7 +39,12 @@ function SystemAdmin(props: SystemAdminProps) {
 
   const [menuData, setMenuData] = useState([]);
   const [menu, setMenu] = useState([]);
+
+  // TODO 生成拖拽列表数据，需删除value字段
+  const [treeMenu, setTreeMenu] = useState([]);
+
   const [visible, setVisible] = useState(false);
+  const [treeVisible, setTreeVisible] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState(undefined);
   const [activeData, setActiveData] = useState(undefined);
 
@@ -71,12 +76,12 @@ function SystemAdmin(props: SystemAdminProps) {
 
     let count = 0;
     while (data.length && count < 20) {
-      // console.log(count, [].concat(data), [].concat(treeData))
       for (let i = 0; i < data.length; i++) {
         data[i] = {
           ...data[i],
           title: data[i].menuName,
           value: data[i].menuId,
+          key: data[i].menuId,
         };
         if (data[i].parentId) {
           const result = recursiveData(treeData, data[i]);
@@ -107,7 +112,6 @@ function SystemAdmin(props: SystemAdminProps) {
       .then(async values => {
         if (activeData) {
           // 修改
-          console.log(values);
           await dispatch({
             type: 'system/updateMenu',
             payload: {
@@ -126,9 +130,7 @@ function SystemAdmin(props: SystemAdminProps) {
         }
 
         setVisible(false);
-        form.resetFields();
         getMenusData();
-
       })
       .catch(info => {
         console.log('Validate Failed:', info);
@@ -140,9 +142,76 @@ function SystemAdmin(props: SystemAdminProps) {
     setActiveData(menuData.find(v => v.menuId === parseInt(sKey)));
   }
 
+  const onDrop = info => {
+    console.log(info);
+    const dropKey = info.node.props.eventKey;
+    const dragKey = info.dragNode.props.eventKey;
+    const dropPos = info.node.props.pos.split('-');
+    const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]);
+
+    const loop = (data, key, callback) => {
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].key === key) {
+          return callback(data[i], i, data);
+        }
+        if (data[i].children) {
+          loop(data[i].children, key, callback);
+        }
+      }
+    };
+    const data = [...treeMenu];
+
+    // Find dragObject
+    let dragObj;
+    loop(data, dragKey, (item, index, arr) => {
+      arr.splice(index, 1);
+      dragObj = item;
+    });
+
+    if (!info.dropToGap) {
+      // Drop on the content
+      loop(data, dropKey, item => {
+        item.children = item.children || [];
+        // where to insert 示例添加到尾部，可以是随意位置
+        item.children.push(dragObj);
+      });
+    } else if (
+      (info.node.props.children || []).length > 0 && // Has children
+      info.node.props.expanded && // Is expanded
+      dropPosition === 1 // On the bottom gap
+    ) {
+      loop(data, dropKey, item => {
+        item.children = item.children || [];
+        // where to insert 示例添加到头部，可以是随意位置
+        item.children.unshift(dragObj);
+      });
+    } else {
+      let ar;
+      let i;
+      loop(data, dropKey, (item, index, arr) => {
+        ar = arr;
+        i = index;
+      });
+      if (dropPosition === -1) {
+        ar.splice(i, 0, dragObj);
+      } else {
+        ar.splice(i + 1, 0, dragObj);
+      }
+    }
+    setTreeMenu(data);
+  };
+
   useEffect(() => {
     getMenusData();
   }, []);
+
+  useEffect(() => {
+    if (visible === false) {
+      form.resetFields();
+      setActiveData(undefined);
+      setSelectedKeys(undefined);
+    }
+  }, [visible]);
 
   // useEffect(() => {
   //   console.log(activeData);
@@ -154,6 +223,16 @@ function SystemAdmin(props: SystemAdminProps) {
         title="菜单设置"
         extra={
           <>
+            <Button
+              type="primary"
+              onClick={() => {
+                setTreeMenu(JSON.parse(JSON.stringify(menu)));
+                setTreeVisible(true);
+              }}
+            >
+              排序
+            </Button>
+            <Divider type="vertical"/>
             <Button
               disabled={selectedKeys === undefined}
               type="primary"
@@ -175,8 +254,6 @@ function SystemAdmin(props: SystemAdminProps) {
             <Button
               type="primary"
               onClick={() => {
-                setActiveData(undefined);
-                setSelectedKeys(undefined);
                 setVisible(true);
               }}
             >
@@ -244,10 +321,7 @@ function SystemAdmin(props: SystemAdminProps) {
         visible={visible}
         onOk={addMenu}
         destroyOnClose
-        onCancel={() => {
-          form.resetFields();
-          setVisible(false);
-        }}
+        onCancel={() => setVisible(false)}
       >
         <Form
           form={form}
@@ -290,6 +364,24 @@ function SystemAdmin(props: SystemAdminProps) {
           </Form.Item>
 
         </Form>
+      </Modal>
+
+      <Modal
+        title="菜单排序"
+        destroyOnClose
+        visible={treeVisible}
+        onCancel={() => {
+          setTreeVisible(false);
+          setTreeMenu([]);
+        }}
+      >
+        <Tree
+          draggable
+          blockNode
+          defaultExpandAll
+          treeData={treeMenu}
+          onDrop={onDrop}
+        />
       </Modal>
 
     </PageContainer>

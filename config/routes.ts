@@ -12,24 +12,30 @@ export default [
             path: '/',
             redirect: '/SystemAdmin',
           },
-          {
-            path: '/welcome',
-            name: 'welcome',
-            icon: 'dashboard',
-            component: './Welcome',
-          },
-          {
-            name: 'list.table-list',
-            icon: 'dashboard',
-            path: '/list',
-            component: './ListTableList',
-          },
+          // {
+          //   path: '/welcome',
+          //   name: 'welcome',
+          //   icon: 'dashboard',
+          //   component: './Welcome',
+          // },
+          // {
+          //   name: 'list.table-list',
+          //   icon: 'dashboard',
+          //   path: '/list',
+          //   component: './ListTableList',
+          // },
           {
             name: 'system.admin',
             icon: 'tool',
             path: '/systemAdmin',
             component: './SystemAdmin',
           },
+          // {
+          //   name: 'system.admin',
+          //   icon: 'tool',
+          //   path: '/test',
+          //   component: './SystemAdmin/Loop',
+          // },
           {
             component: './404',
           },
