@@ -10,32 +10,24 @@ export default [
         routes: [
           {
             path: '/',
-            redirect: '/SystemAdmin',
+            redirect: '/systemAdmin',
           },
-          // {
-          //   path: '/welcome',
-          //   name: 'welcome',
-          //   icon: 'dashboard',
-          //   component: './Welcome',
-          // },
-          // {
-          //   name: 'list.table-list',
-          //   icon: 'dashboard',
-          //   path: '/list',
-          //   component: './ListTableList',
-          // },
           {
-            name: 'system.admin',
+            name: 'system',
             icon: 'tool',
             path: '/systemAdmin',
-            component: './SystemAdmin',
+            routes: [
+              {
+                path: '/systemAdmin',
+                redirect: '/SystemAdmin/menu',
+              },
+              {
+                name: 'menu',
+                path: '/systemAdmin/menu',
+                component: './SystemAdmin/Menu',
+              },
+            ]
           },
-          // {
-          //   name: 'system.admin',
-          //   icon: 'tool',
-          //   path: '/test',
-          //   component: './SystemAdmin/Loop',
-          // },
           {
             component: './404',
           },

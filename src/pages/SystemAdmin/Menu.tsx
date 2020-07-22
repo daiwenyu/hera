@@ -1,13 +1,20 @@
 import {PageContainer} from "@ant-design/pro-layout";
 import React, {useEffect, useState} from "react";
-import {Card, Row, Col, Menu, Button, Modal, Form, Input, TreeSelect, Divider, List, Tree} from "antd";
+import {Card, Row, Col, Menu, Button, Modal, Form, Input, TreeSelect, Divider, Tree, Select} from "antd";
 import {connect} from "umi";
 import {SystemModelState} from "@/models/connect";
 import {Dispatch} from "@@/plugin-dva/connect";
+import {createFromIconfontCN} from '@ant-design/icons';
 
 const {SubMenu} = Menu;
+const Icon = createFromIconfontCN({
+  scriptUrl: '//at.alicdn.com/t/font_1958855_2w455u5pd5j.js',
+});
+const IconType = ["icon-earth", "icon-message", "icon-dashboard", "icon-piechart", "icon-setting", "icon-eye", "icon-location", "icon-edit-square", "icon-save", "icon-appstore", "icon-layout", "icon-play-square", "icon-control", "icon-codelibrary", "icon-detail", "icon-project", "icon-wallet", "icon-calculator", "icon-interation", "icon-user", "icon-team", "icon-areachart", "icon-linechart", "icon-barchart", "icon-pointmap", "icon-alert", "icon-bulb", "icon-experiment", "icon-bell", "icon-home", "icon-shop", "icon-fund", "icon-desktop", "icon-Partition", "icon-index", "icon-Console-SQL"];
 
-export interface SystemAdminProps {
+//Array.from(document.querySelectorAll('.icon-code.icon-code-show')).map(v=>v.innerText)
+
+export interface MenuAdminProps {
   dispatch: Dispatch;
 }
 
@@ -15,13 +22,20 @@ function makeMenu(data) {
   return data.map(v => {
     if (Array.isArray(v.children) && v.children.length) {
       return (
-        <SubMenu title={v.menuName} key={v.menuId}>
+        <SubMenu
+          title={v.menuName}
+          key={v.menuId}
+          icon={<Icon type={v.menuIcon}/>}
+        >
           {makeMenu(v.children)}
         </SubMenu>
       )
     }
     return (
-      <Menu.Item key={v.menuId}>
+      <Menu.Item
+        key={v.menuId}
+        icon={<Icon type={v.menuIcon}/>}
+      >
         {v.menuName}
       </Menu.Item>
     )
@@ -29,23 +43,25 @@ function makeMenu(data) {
   });
 }
 
-function SystemAdmin(props: SystemAdminProps) {
+function MenuAdmin(props: MenuAdminProps) {
   const {dispatch} = props;
   const [form] = Form.useForm();
-  const layout = {
-    labelCol: {span: 4},
-    wrapperCol: {span: 20},
-  };
 
+  // 菜单数据库原始数据
   const [menuData, setMenuData] = useState([]);
+
+  // 菜单数据
   const [menu, setMenu] = useState([]);
 
   // TODO 生成拖拽列表数据，需删除value字段
   const [treeMenu, setTreeMenu] = useState([]);
 
-  const [visible, setVisible] = useState(false);
   const [treeVisible, setTreeVisible] = useState(false);
-  const [selectedKeys, setSelectedKeys] = useState(undefined);
+
+  // 菜单预览
+  const [preVisible, setPreVisible] = useState(false);
+
+  // 当前选中菜单
   const [activeData, setActiveData] = useState(undefined);
 
   const getMenusData = async () => {
@@ -82,6 +98,7 @@ function SystemAdmin(props: SystemAdminProps) {
           title: data[i].menuName,
           value: data[i].menuId,
           key: data[i].menuId,
+          // icon: (<Icon type={data[i].menuIcon}/>)
         };
         if (data[i].parentId) {
           const result = recursiveData(treeData, data[i]);
@@ -101,8 +118,7 @@ function SystemAdmin(props: SystemAdminProps) {
 
       count++;
     }
-
-    // console.log(data, treeData);
+    console.log(treeData)
     setMenu(treeData);
   }
 
@@ -128,18 +144,13 @@ function SystemAdmin(props: SystemAdminProps) {
             }
           });
         }
-
-        setVisible(false);
+        form.resetFields();
+        setActiveData(undefined);
         getMenusData();
       })
       .catch(info => {
         console.log('Validate Failed:', info);
       });
-  }
-
-  const handlerSelectMenu = (sKey) => {
-    setSelectedKeys(sKey);
-    setActiveData(menuData.find(v => v.menuId === parseInt(sKey)));
   }
 
   const onDrop = info => {
@@ -201,21 +212,26 @@ function SystemAdmin(props: SystemAdminProps) {
     setTreeMenu(data);
   };
 
-  useEffect(() => {
-    getMenusData();
-  }, []);
-
-  useEffect(() => {
-    if (visible === false) {
+  const onSelectTree = (selectedKeys, e) => {
+    if (selectedKeys.length === 1) {
+      const currentData = menuData.find(v => selectedKeys[0] === v.menuId);
+      setActiveData(currentData);
+      form.setFieldsValue({
+        parentId: currentData.parentId,
+        menuName: currentData.menuName,
+        menuIcon: currentData.menuIcon,
+        menuPath: currentData.menuPath
+      });
+    } else {
       form.resetFields();
       setActiveData(undefined);
-      setSelectedKeys(undefined);
     }
-  }, [visible]);
+  }
 
-  // useEffect(() => {
-  //   console.log(activeData);
-  // }, [activeData]);
+  useEffect(() => {
+    getMenusData();
+    console.log('123')
+  }, []);
 
   return (
     <PageContainer>
@@ -234,136 +250,132 @@ function SystemAdmin(props: SystemAdminProps) {
             </Button>
             <Divider type="vertical"/>
             <Button
-              disabled={selectedKeys === undefined}
               type="primary"
-              onClick={() => {
-                setVisible(true);
-                if (activeData) {
-                  form.setFieldsValue({
-                    parentId: activeData.parentId,
-                    menuName: activeData.menuName,
-                    menuIcon: activeData.menuIcon,
-                    menuPath: activeData.menuPath
-                  });
-                }
-              }}
+              onClick={() => setPreVisible(true)}
             >
-              编辑
-            </Button>
-            <Divider type="vertical"/>
-            <Button
-              type="primary"
-              onClick={() => {
-                setVisible(true);
-              }}
-            >
-              添加
+              预览
             </Button>
           </>
         }
       >
-        <Row>
-          <Col span={4}>
-            <Menu
-              mode="inline"
-              theme="dark"
-              selectedKeys={selectedKeys}
-              onSelect={({selectedKeys: sKey}) => handlerSelectMenu(sKey)}
-            >
-              {makeMenu(menu)}
-            </Menu>
-          </Col>
-          <Col span={20}>
-            <Menu
-              mode="horizontal"
-              selectedKeys={selectedKeys}
-              onSelect={({selectedKeys: sKey}) => handlerSelectMenu(sKey)}
-            >
-              {makeMenu(menu)}
-            </Menu>
+        <Row gutter={16}>
+          <Col span={6}>
             {
-              activeData ? (
-                <List
-                  style={{
-                    margin: 16
-                  }}
-                >
-                  <List.Item.Meta
-                    title="菜单Id"
-                    description={activeData.menuId}
-                  />
-                  <List.Item.Meta
-                    title="菜单名称"
-                    description={activeData.menuName}
-                  />
-                  <List.Item.Meta
-                    title="菜单路径"
-                    description={activeData.menuPath}
-                  />
-                  <List.Item.Meta
-                    title="父级Id"
-                    description={activeData.parentId || '无'}
-                  />
-                  <List.Item.Meta
-                    title="菜单图标"
-                    description={activeData.menuIcon}
-                  />
-                </List>
+              menu.length ? (
+                <Tree
+                  showIcon
+                  //draggable
+                  blockNode
+                  defaultExpandAll
+                  treeData={menu}
+                  //onDrop={onDrop}
+                  onSelect={onSelectTree}
+                />
               ) : null
             }
           </Col>
-        </Row>
+          <Col span={10}>
+            <Form
+              form={form}
+              layout="vertical"
+            >
 
+              <Form.Item
+                label="上级菜单"
+                name="parentId"
+              >
+                <TreeSelect
+                  allowClear
+                  showSearch
+                  treeData={menu}
+                />
+              </Form.Item>
+
+              <Form.Item
+                label="菜单名称"
+                name="menuName"
+                rules={[{required: true, message: 'Please input menuName!'}]}
+              >
+                <Input/>
+              </Form.Item>
+
+              <Form.Item
+                label="菜单图标"
+                name="menuIcon"
+                rules={[{required: true, message: 'Please input menuIcon!'}]}
+              >
+                <Select allowClear>
+                  {
+                    IconType.map(v => (
+                      <Select.Option key={v} value={v}>
+                        <Icon type={v}/>
+                      </Select.Option>
+                    ))
+                  }
+                </Select>
+              </Form.Item>
+
+              <Form.Item
+                label="菜单路径"
+                name="menuPath"
+                rules={[{required: true, message: 'Please input menuPath!'}]}
+              >
+                <Input/>
+              </Form.Item>
+
+              <Form.Item>
+                <Button
+                  type="primary"
+                  onClick={addMenu}
+                >
+                  {
+                    activeData ? '更新' : '添加'
+                  }
+                </Button>
+                <Divider type="vertical"/>
+                {
+                  activeData ? (
+                    <Button
+                      type="primary"
+                      danger
+                    >
+                      删除
+                    </Button>
+                  ) : (
+                    <Button>
+                      重置
+                    </Button>
+                  )
+                }
+              </Form.Item>
+            </Form>
+          </Col>
+        </Row>
       </Card>
 
       <Modal
-        title={selectedKeys ? "编辑菜单" : "添加菜单"}
-        visible={visible}
-        onOk={addMenu}
-        destroyOnClose
-        onCancel={() => setVisible(false)}
+        title="预览"
+        visible={preVisible}
+        width={1000}
+        onCancel={() => setPreVisible(false)}
+        footer={null}
       >
-        <Form
-          form={form}
-          {...layout}
-        >
-
-          <Form.Item
-            label="上级菜单"
-            name="parentId"
-          >
-            <TreeSelect
-              allowClear
-              showSearch
-              treeData={menu}
-            />
-          </Form.Item>
-
-          <Form.Item
-            label="菜单名称"
-            name="menuName"
-            rules={[{required: true, message: 'Please input menuName!'}]}
-          >
-            <Input/>
-          </Form.Item>
-
-          <Form.Item
-            label="菜单图标"
-            name="menuIcon"
-            rules={[{required: true, message: 'Please input menuIcon!'}]}
-          >
-            <Input/>
-          </Form.Item>
-
-          <Form.Item
-            label="菜单路径"
-            name="menuPath"
-            rules={[{required: true, message: 'Please input menuPath!'}]}
-          >
-            <Input/>
-          </Form.Item>
-
-        </Form>
+        <Row>
+          <Col span={5}>
+            <Menu
+              mode="inline"
+              theme="dark"
+              style={{minHeight: 500}}
+            >
+              {makeMenu(menu)}
+            </Menu>
+          </Col>
+          <Col span={19}>
+            <Menu mode="horizontal">
+              {makeMenu(menu)}
+            </Menu>
+          </Col>
+        </Row>
       </Modal>
 
       <Modal
@@ -388,4 +400,4 @@ function SystemAdmin(props: SystemAdminProps) {
   );
 }
 
-export default connect(({system}: SystemModelState) => ({system}))(SystemAdmin);
+export default connect(({system}: SystemModelState) => ({system}))(MenuAdmin);
