@@ -147,7 +147,7 @@ function MenuAdmin(props: MenuAdminProps) {
       }
       const parentSort = menuData.find(v => v.menuId === parentId).sort;
       const itemData = menuData.filter(v => v.sort.includes(parentSort + '-', 0));
-      console.log(itemData);
+      // console.log(itemData);
       return `${parentSort}-${itemData.length}`;
     }
 
