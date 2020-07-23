@@ -141,6 +141,16 @@ function MenuAdmin(props: MenuAdminProps) {
   }
 
   const addMenu = () => {
+    const getSortValue = (parentId) => {
+      if (parentId === undefined) {
+        return menu.length.toString()
+      }
+      const parentSort = menuData.find(v => v.menuId === parentId).sort;
+      const itemData = menuData.filter(v => v.sort.includes(parentSort + '-', 0));
+      console.log(itemData);
+      return `${parentSort}-${itemData.length}`;
+    }
+
     form
       .validateFields()
       .then(async values => {
@@ -150,6 +160,7 @@ function MenuAdmin(props: MenuAdminProps) {
             type: 'system/updateMenu',
             payload: {
               id: activeData.menuId,
+              sort: getSortValue(values.parentId),
               ...values
             }
           });
@@ -158,6 +169,7 @@ function MenuAdmin(props: MenuAdminProps) {
           await dispatch({
             type: 'system/addMenu',
             payload: {
+              sort: getSortValue(values.parentId),
               ...values
             }
           });
@@ -273,6 +285,8 @@ function MenuAdmin(props: MenuAdminProps) {
           }
         });
         await getMenusData();
+        form.resetFields();
+        setActiveData(undefined);
       },
       onCancel() {
 
