@@ -17,3 +17,17 @@ export async function updateMenu(params): Promise<any> {
     data: params,
   });
 }
+
+export async function updateMenuSort(params): Promise<any> {
+  return request('/api/system/updateMenuSort', {
+    method: 'POST',
+    data: params,
+  });
+}
+
+export async function deleteMenus(params): Promise<any> {
+  return request('/api/system/deleteMenus', {
+    method: 'POST',
+    data: params,
+  });
+}

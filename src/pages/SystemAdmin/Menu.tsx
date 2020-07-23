@@ -4,9 +4,10 @@ import {Card, Row, Col, Menu, Button, Modal, Form, Input, TreeSelect, Divider, T
 import {connect} from "umi";
 import {SystemModelState} from "@/models/connect";
 import {Dispatch} from "@@/plugin-dva/connect";
-import {createFromIconfontCN} from '@ant-design/icons';
+import {createFromIconfontCN, ExclamationCircleOutlined} from '@ant-design/icons';
 
 const {SubMenu} = Menu;
+const {confirm} = Modal;
 const Icon = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_1958855_2w455u5pd5j.js',
 });
@@ -53,9 +54,10 @@ function MenuAdmin(props: MenuAdminProps) {
   // 菜单数据
   const [menu, setMenu] = useState([]);
 
-  // TODO 生成拖拽列表数据，需删除value字段
+  // 排序结构
   const [treeMenu, setTreeMenu] = useState([]);
 
+  // 排序modal显示控制
   const [treeVisible, setTreeVisible] = useState(false);
 
   // 菜单预览
@@ -98,14 +100,12 @@ function MenuAdmin(props: MenuAdminProps) {
           title: data[i].menuName,
           value: data[i].menuId,
           key: data[i].menuId,
-          // icon: (<Icon type={data[i].menuIcon}/>)
+          icon: (<Icon type={data[i].menuIcon}/>)
         };
         if (data[i].parentId) {
           const result = recursiveData(treeData, data[i]);
           if (result) {
-
             data.splice(i, 1);
-
             break;
           }
         } else {
@@ -118,7 +118,25 @@ function MenuAdmin(props: MenuAdminProps) {
 
       count++;
     }
-    console.log(treeData)
+    // console.log(treeData);
+    // treeData排序
+    const sortData = (arr) => {
+      arr.sort((a, b) => {
+        if (a.sort < b.sort) {
+          return -1;
+        }
+        if (a.sort > b.sort) {
+          return 1;
+        }
+        return 0;
+      });
+      arr.forEach(v => {
+        if (Array.isArray(v.children) && v.children.length) {
+          sortData(v.children);
+        }
+      });
+    }
+    sortData(treeData)
     setMenu(treeData);
   }
 
@@ -154,7 +172,7 @@ function MenuAdmin(props: MenuAdminProps) {
   }
 
   const onDrop = info => {
-    console.log(info);
+    // console.log(info);
     const dropKey = info.node.props.eventKey;
     const dragKey = info.dragNode.props.eventKey;
     const dropPos = info.node.props.pos.split('-');
@@ -228,9 +246,87 @@ function MenuAdmin(props: MenuAdminProps) {
     }
   }
 
+  const onDelete = () => {
+    const currentId = activeData.menuId;
+    let deleteData = [];
+
+    const findDeleteData = (arr, flag) => {
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i].menuId === currentId || flag === true) {
+          deleteData.push(arr[i].menuId);
+        }
+        if (Array.isArray(arr[i].children) && arr[i].children.length) {
+          findDeleteData(arr[i].children, arr[i].menuId === currentId);
+        }
+      }
+    }
+    findDeleteData(menu);
+    confirm({
+      title: '确认删除该菜单？',
+      icon: <ExclamationCircleOutlined/>,
+      content: deleteData.length > 1 ? '该菜单下存在子菜单，删除该菜单，其子菜单会同时删除' : null,
+      async onOk() {
+        await dispatch({
+          type: 'system/deleteMenus',
+          payload: {
+            ids: deleteData
+          }
+        });
+        await getMenusData();
+      },
+      onCancel() {
+
+      },
+    });
+  }
+
+  const onSaveSort = async () => {
+    // console.log(treeMenu);
+    const diffArr = [];
+    let level = 0;
+    const checkSort = (arr, inds, parentId) => {
+      let indexArr = [].concat(inds)
+      for (let i = 0; i < arr.length; i++) {
+        indexArr[level] = i;
+        // 数据对比
+        const sort = indexArr.join('-');
+        const oldData = menuData.find(v => v.menuId === arr[i].menuId);
+        // console.log(parentId, oldData.parentId)
+        if (sort !== oldData.sort || !parentId !== !oldData.parentId) {
+          diffArr.push({
+            menuId: arr[i].menuId,
+            sort,
+            parentId
+          })
+        }
+        // console.log(level);
+        if (Array.isArray(arr[i].children) && arr[i].children.length) {
+          level++;
+          checkSort(arr[i].children, indexArr, arr[i].menuId);
+        }
+      }
+      if (level > 0) {
+        level--;
+      }
+    }
+    checkSort(treeMenu);
+    // console.log(diffArr);
+
+    await dispatch({
+      type: 'system/updateMenuSort',
+      payload: {
+        diffArr: diffArr
+      }
+    })
+
+    await getMenusData();
+
+    setTreeVisible(false);
+    setTreeMenu([]);
+  }
+
   useEffect(() => {
     getMenusData();
-    console.log('123')
   }, []);
 
   return (
@@ -240,6 +336,7 @@ function MenuAdmin(props: MenuAdminProps) {
         extra={
           <>
             <Button
+              ghost
               type="primary"
               onClick={() => {
                 setTreeMenu(JSON.parse(JSON.stringify(menu)));
@@ -250,6 +347,7 @@ function MenuAdmin(props: MenuAdminProps) {
             </Button>
             <Divider type="vertical"/>
             <Button
+              ghost
               type="primary"
               onClick={() => setPreVisible(true)}
             >
@@ -338,11 +436,14 @@ function MenuAdmin(props: MenuAdminProps) {
                     <Button
                       type="primary"
                       danger
+                      onClick={onDelete}
                     >
                       删除
                     </Button>
                   ) : (
-                    <Button>
+                    <Button
+                      onClick={() => form.resetFields()}
+                    >
                       重置
                     </Button>
                   )
@@ -386,6 +487,7 @@ function MenuAdmin(props: MenuAdminProps) {
           setTreeVisible(false);
           setTreeMenu([]);
         }}
+        onOk={onSaveSort}
       >
         <Tree
           draggable
