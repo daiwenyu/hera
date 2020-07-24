@@ -19,7 +19,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.2.1",
     "@ant-design/pro-layout": "^6.2.5",
-    "@ant-design/pro-table": "^2.4.3",
+    "@ant-design/pro-table": "^2.4.4",
     "antd": "^4.4.3",
     "classnames": "^2.2.6",
     "dva": "^2.4.1",
@@ -50,7 +50,7 @@
     "jsdom-global": "^3.0.2",
     "mockjs": "^1.1.0",
     "prettier": "^2.0.5",
-    "puppeteer-core": "^5.2.0",
+    "puppeteer-core": "^5.2.1",
     "stylelint": "^13.6.1"
   }
 }
