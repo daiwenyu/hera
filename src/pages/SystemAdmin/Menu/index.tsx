@@ -166,8 +166,6 @@ function MenuAdmin(props: MenuAdminProps) {
     form
       .validateFields()
       .then(async values => {
-        console.log(values);
-        return;
         if (activeData) {
           // 修改
           await dispatch({
