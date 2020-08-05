@@ -1,4 +1,4 @@
-import request from '@/utils/request';
+import { request } from 'yyui';
 
 export async function getMenus(): Promise<any> {
   return request('/api/system/getMenus');
