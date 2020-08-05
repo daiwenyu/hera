@@ -27,7 +27,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "umi": "^3.2.14",
-    "yyui": "^1.0.0-alpha.4"
+    "yyui": "^1.0.0-alpha.6"
   },
   "devDependencies": {
     "@ant-design/pro-cli": "^1.0.22",

@@ -11,11 +11,14 @@ import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState } from '@/models/connect';
 import { getAuthorityFromRouter } from '@/utils/utils';
 import { YYLayout } from 'yyui';
+import DefaultSettings from '../../config/defaultSettings';
 
 function Layout({ children }) {
+  const { title } = DefaultSettings;
   return (
     <YYLayout
       locale="zh-CN"
+      title={title}
     >
       {children}
     </YYLayout>

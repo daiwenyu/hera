@@ -1,7 +1,7 @@
-import { PageContainer } from "@ant-design/pro-layout";
 import React, { useEffect, useState } from "react";
+import { MenuAdmin } from 'yyui';
 
 function Menu() {
-  return (<>123</>);
+  return (<MenuAdmin />);
 }
 export default Menu;
