@@ -10,23 +10,37 @@ export default [
         routes: [
           {
             path: '/',
-            redirect: '/systemAdmin',
+            redirect: '/dashbord',
           },
           {
-            name: 'system',
+            name: 'dashbord',
             icon: 'tool',
-            path: '/systemAdmin',
-            routes: [
-              {
-                path: '/systemAdmin',
-                redirect: '/SystemAdmin/menu',
-              },
-              {
-                name: 'menu',
-                path: '/systemAdmin/menu',
-                component: './SystemAdmin/Menu',
-              },
-            ]
+            path: '/dashbord',
+            component: './index/dashbord',
+          },
+          {
+            name: 'project-management',
+            icon: 'tool',
+            path: '/projectManagement',
+            component: './projectManagement',
+          },
+          {
+            name: 'customer-management',
+            icon: 'tool',
+            path: '/customerManagement',
+            component: './customerManagement',
+          },
+          {
+            name: 'quality-management',
+            icon: 'tool',
+            path: '/qualityManagement',
+            component: './qualityManagement',
+          },
+          {
+            name: 'system-management',
+            icon: 'tool',
+            path: '/systemManagement',
+            component: './systemManagement',
           },
           {
             component: './404',

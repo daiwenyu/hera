@@ -1,4 +1,4 @@
-import { request } from 'yyui';
+import request from '@/utils/request';
 
 export interface LoginParamsType {
   userName: string;

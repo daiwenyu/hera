@@ -50,6 +50,13 @@ export default {
   'menu.editor.mind': '脑图编辑器',
   'menu.editor.koni': '拓扑编辑器',
 
-  'menu.system': '系统管理',
-  'menu.system.menu': '菜单设置'
+  'menu.dashbord': 'dashbord',
+
+  'menu.project-management': '项目管理',
+
+  'menu.customer-management': '客户管理',
+
+  'menu.quality-management': '质量管理',
+
+  'menu.system-management': '系统管理',
 };
