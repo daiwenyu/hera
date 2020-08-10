@@ -1,10 +1,9 @@
-import {MenuDataItem, Settings as ProSettings} from '@ant-design/pro-layout';
-import {GlobalModelState} from './global';
-import {UserModelState} from './user';
-import {StateType} from './login';
-import {SystemModelState} from './system';
+import { MenuDataItem, Settings as ProSettings } from '@ant-design/pro-layout';
+import { GlobalModelState } from './global';
+import { UserModelState } from './user';
+import { StateType } from './login';
 
-export {GlobalModelState, UserModelState, SystemModelState};
+export { GlobalModelState, UserModelState };
 
 export interface Loading {
   global: boolean;

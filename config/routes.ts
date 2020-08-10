@@ -1,5 +1,16 @@
 export default [
   {
+    path: '/user',
+    component: '../layouts/UserLayout',
+    routes: [
+      {
+        name: 'login',
+        path: '/user/login',
+        component: './user/login',
+      },
+    ],
+  },
+  {
     path: '/',
     component: '../layouts/SecurityLayout',
     routes: [
@@ -14,31 +25,31 @@ export default [
           },
           {
             name: 'dashbord',
-            icon: 'tool',
+            icon: 'fund',
             path: '/dashbord',
             component: './index/dashbord',
           },
           {
             name: 'project-management',
-            icon: 'tool',
+            icon: 'table',
             path: '/projectManagement',
             component: './projectManagement',
           },
           {
             name: 'customer-management',
-            icon: 'tool',
+            icon: 'team',
             path: '/customerManagement',
             component: './customerManagement',
           },
           {
             name: 'quality-management',
-            icon: 'tool',
+            icon: 'safety',
             path: '/qualityManagement',
             component: './qualityManagement',
           },
           {
             name: 'system-management',
-            icon: 'tool',
+            icon: 'setting',
             path: '/systemManagement',
             component: './systemManagement',
           },
