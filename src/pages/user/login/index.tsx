@@ -17,14 +17,26 @@ const Login: React.FC = (prop) => {
           <FormItem>
             <Input
               size="large"
-              prefix={<UserOutlined className="site-form-item-icon" />}
+              prefix={
+                <UserOutlined
+                  style={{
+                    color: '#1890ff'
+                  }}
+                />
+              }
               placeholder="请输入用户名"
             />
           </FormItem>
           <FormItem>
             <Password
               size="large"
-              prefix={<LockOutlined className="site-form-item-icon" />}
+              prefix={
+                <LockOutlined
+                  style={{
+                    color: '#1890ff'
+                  }}
+                />
+              }
               placeholder="请输入密码"
             />
           </FormItem>

@@ -7,7 +7,7 @@ import ProLayout, {
 import { Link, useIntl, connect, Dispatch, history } from 'umi';
 import { Result, Button } from 'antd';
 import Authorized from '@/utils/Authorized';
-// import RightContent from '@/components/GlobalHeader/RightContent';
+import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState } from '@/models/connect';
 import { getAuthorityFromRouter } from '@/utils/utils';
 
@@ -117,7 +117,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       }}
       footerRender={undefined}
       menuDataRender={menuDataRender}
-      // rightContentRender={() => <RightContent />}
+      rightContentRender={() => <RightContent />}
       {...props}
       {...settings}
     >
