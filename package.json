@@ -18,15 +18,15 @@
   ],
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
-    "@ant-design/pro-layout": "^6.4.6",
-    "@ant-design/pro-table": "^2.5.10",
+    "@ant-design/pro-layout": "^6.4.9",
+    "@ant-design/pro-table": "^2.5.15",
     "antd": "^4.5.4",
     "classnames": "^2.2.6",
     "dva": "^2.4.1",
     "path-to-regexp": "^6.1.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "umi": "^3.2.15",
+    "umi": "^3.2.16",
     "umi-request": "^1.3.5"
   },
   "devDependencies": {
@@ -40,7 +40,7 @@
     "@umijs/fabric": "^2.2.2",
     "@umijs/plugin-blocks": "^2.2.1",
     "@umijs/preset-ant-design-pro": "^1.2.2",
-    "@umijs/preset-react": "^1.5.21",
+    "@umijs/preset-react": "^1.5.22",
     "carlo": "^0.9.46",
     "chalk": "^4.1.0",
     "cross-env": "^7.0.2",

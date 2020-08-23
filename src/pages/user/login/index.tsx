@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button, Input, Row, Col } from 'antd';
+import { Form, Button, Input, Row, Col, Space } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 const FormItem = Form.Item;
@@ -39,6 +39,19 @@ const Login: React.FC = (prop) => {
               }
               placeholder="请输入密码"
             />
+          </FormItem>
+          <FormItem>
+            <Space style={{ width: '100%' }}>
+              <Input />
+              <img
+                style={{
+                  width: 100
+
+                }}
+                alt=""
+                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+              />
+            </Space>
           </FormItem>
           <Form.Item>
             <Button

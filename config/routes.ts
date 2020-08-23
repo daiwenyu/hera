@@ -30,6 +30,12 @@ export default [
             component: './index/dashbord',
           },
           {
+            name: 'user-management',
+            icon: 'user',
+            path: '/userManagement',
+            component: './userManagement',
+          },
+          {
             name: 'project-management',
             icon: 'table',
             path: '/projectManagement',
@@ -40,6 +46,7 @@ export default [
             icon: 'team',
             path: '/customerManagement',
             component: './customerManagement',
+
           },
           {
             name: 'quality-management',

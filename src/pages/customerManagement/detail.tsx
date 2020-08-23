@@ -1,56 +1,39 @@
 import React, { useState } from 'react';
-import { Card, Table, Form, Input, Space, Button, Modal, Select, DatePicker, Tag } from 'antd';
-import { Link } from 'umi';
+import { Card, Table, Form, Input, Space, Button, Modal, Select } from 'antd';
 
 const FormItem = Form.Item;
 const { Option } = Select;
-const { TextArea } = Input;
 
 function CustomerManagement() {
   const [visible, setVisible] = useState(false);
 
-  const dataSource = [{
-    id: 'CP001',
-    name: '上海迪颉',
-    user: '佘涛',
-    adress: '上海徐汇区田林路113号',
-    status: 1,
-    date: '2020-08-06'
-  }];
-
   const columns = [{
     title: '公司编号',
-    dataIndex: 'id',
+    dataIndex: '',
   }, {
     title: '企业名称',
-    dataIndex: 'name',
+    dataIndex: '',
   }, {
     title: '法人代表',
-    dataIndex: 'user',
+    dataIndex: '',
   }, {
     title: '注册地址',
-    dataIndex: 'adress',
-  }, {
-    title: '状态',
-    dataIndex: 'status',
-    render: value => (
-      <Tag>正常</Tag>
-    )
+    dataIndex: '',
   }, {
     title: '成立时间',
-    dataIndex: 'date',
+    dataIndex: '',
   }, {
     title: '操作',
     dataIndex: '',
     render: value => (
-      <Link to="">详情</Link>
+      <Button type="link">详情</Button>
     )
   }];
 
 
   return (
     <Card
-      title="用户管理"
+      title="客户管理"
       extra={
         <Space>
           <Button
@@ -88,35 +71,38 @@ function CustomerManagement() {
       </Form>
       <Table
         columns={columns}
-        dataSource={dataSource}
       />
       <Modal
-        title="新增企业"
+        title="新增用户"
         visible={visible}
         okText="保存"
         onCancel={() => setVisible(false)}
       >
         <Form>
-          <FormItem label="公司名称">
+          <FormItem label="姓名">
             <Input />
           </FormItem>
-          <FormItem label="公司地址">
+          <FormItem label="手机号">
             <Input />
           </FormItem>
-          <FormItem label="法人代表">
+          <FormItem label="账号">
             <Input />
           </FormItem>
-          <FormItem label="公司电话">
+          <FormItem label="密码">
             <Input />
           </FormItem>
-          <FormItem label="公司介绍">
-            <TextArea />
+          <FormItem label="所属部门">
+            <Select>
+              <Option value={1}>市场部</Option>
+              <Option value={2}>管理部</Option>
+            </Select>
           </FormItem>
-          <FormItem label="公司规模">
-            <Input />
-          </FormItem>
-          <FormItem label="成立时间">
-            <DatePicker />
+          <FormItem label="角色">
+            <Select>
+              <Option value={1}>管理员</Option>
+              <Option value={2}>普通用户</Option>
+              <Option value={3}>超级管理员</Option>
+            </Select>
           </FormItem>
         </Form>
       </Modal>

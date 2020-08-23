@@ -52,6 +52,8 @@ export default {
 
   'menu.dashbord': 'dashbord',
 
+  'menu.user-management': '用户管理',
+
   'menu.project-management': '项目管理',
 
   'menu.customer-management': '客户管理',
