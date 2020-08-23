@@ -59,6 +59,22 @@ export default [
             icon: 'setting',
             path: '/systemManagement',
             component: './systemManagement',
+            routes: [{
+              name: 'menu',
+              icon: 'safety',
+              path: '/systemManagement/menu',
+              component: './systemManagement/menu',
+            }, {
+              name: 'role',
+              icon: 'safety',
+              path: '/systemManagement/role',
+              component: './systemManagement/role',
+            }, {
+              name: 'authority',
+              icon: 'safety',
+              path: '/systemManagement/authority',
+              component: './systemManagement/authority',
+            },]
           },
           {
             component: './404',

@@ -15,7 +15,7 @@ const proSettings: DefaultSettings = {
   menu: {
     locale: true,
   },
-  title: 'YY sports',
+  title: 'ChangeView',
   pwa: false,
   iconfontUrl: '',
 };
