@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Table, Form, Input, Space, Button, Modal, Select, Tag, DatePicker } from 'antd';
+import { Card, Table, Form, Input, Space, Button, Modal, Select, Tag, DatePicker, Row, Col } from 'antd';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -62,29 +62,37 @@ function QualityManagement() {
         </Button>
       }
     >
-      <Form>
-        <FormItem
-          label="项目编号"
-        >
-          <Input />
-        </FormItem>
-        <FormItem
-          label="项目状态"
-        >
-          <Select>
-            {
-              Object.keys(projectStatusType).map(v => (
-                <Option value={v}>{projectType[v]}</Option>
-              ))
-            }
-          </Select>
-        </FormItem>
-        <FormItem>
-          <Space>
-            <Button>查询</Button>
-            <Button>重置</Button>
-          </Space>
-        </FormItem>
+      <Form layout="vertical">
+        <Row gutter={16}>
+          <Col span={6}>
+            <FormItem
+              label="项目编号"
+            >
+              <Input />
+            </FormItem>
+          </Col>
+          <Col span={6}>
+            <FormItem
+              label="项目状态"
+            >
+              <Select>
+                {
+                  Object.keys(projectStatusType).map(v => (
+                    <Option value={v}>{projectType[v]}</Option>
+                  ))
+                }
+              </Select>
+            </FormItem>
+          </Col>
+          <Col span={6}>
+            <FormItem label=" ">
+              <Space>
+                <Button>查询</Button>
+                <Button>重置</Button>
+              </Space>
+            </FormItem>
+          </Col>
+        </Row>
       </Form>
       <Table
         columns={columns}

@@ -57,6 +57,7 @@ export default {
   'menu.project-management': '项目管理',
 
   'menu.customer-management': '客户管理',
+  'menu.customer-management.detail': '客户详情',
 
   'menu.quality-management': '质量管理',
 

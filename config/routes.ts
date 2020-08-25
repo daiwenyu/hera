@@ -45,8 +45,16 @@ export default [
             name: 'customer-management',
             icon: 'team',
             path: '/customerManagement',
-            component: './customerManagement',
-
+            routes: [{
+              hideInMenu: true,
+              path: '/customerManagement',
+              component: './customerManagement',
+            }, {
+              hideInMenu: true,
+              name: 'detail',
+              path: '/customerManagement/detail',
+              component: './customerManagement/detail',
+            }]
           },
           {
             name: 'quality-management',
@@ -58,7 +66,7 @@ export default [
             name: 'system-management',
             icon: 'setting',
             path: '/systemManagement',
-            component: './systemManagement',
+            //component: './systemManagement',
             routes: [{
               name: 'menu',
               icon: 'safety',

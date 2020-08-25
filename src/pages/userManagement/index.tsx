@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Table, Form, Input, Space, Button, Modal, Select } from 'antd';
+import { Card, Table, Form, Input, Space, Button, Modal, Select, Row, Col } from 'antd';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -42,28 +42,38 @@ function UserManagement() {
         </Button>
       }
     >
-      <Form>
-        <FormItem
-          label="姓名"
-        >
-          <Input />
-        </FormItem>
-        <FormItem
-          label="手机号"
-        >
-          <Input />
-        </FormItem>
-        <FormItem
-          label="账号"
-        >
-          <Input />
-        </FormItem>
-        <FormItem>
-          <Space>
-            <Button>查询</Button>
-            <Button>重置</Button>
-          </Space>
-        </FormItem>
+      <Form layout="vertical">
+        <Row gutter={16}>
+          <Col span={6}>
+            <FormItem
+              label="姓名"
+            >
+              <Input />
+            </FormItem>
+          </Col>
+          <Col span={6}>
+            <FormItem
+              label="手机号"
+            >
+              <Input />
+            </FormItem>
+          </Col>
+          <Col span={6}>
+            <FormItem
+              label="账号"
+            >
+              <Input />
+            </FormItem>
+          </Col>
+          <Col span={6}>
+            <FormItem label=" ">
+              <Space>
+                <Button>查询</Button>
+                <Button>重置</Button>
+              </Space>
+            </FormItem>
+          </Col>
+        </Row>
       </Form>
       <Table
         columns={columns}

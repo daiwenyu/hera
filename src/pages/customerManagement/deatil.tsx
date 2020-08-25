@@ -33,23 +33,23 @@ function CustomerManagement() {
 
   return (
     <Card
-      title="客户管理"
-      extra={
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => setVisible(true)}
-          >
-            新增
-          </Button>
-          <Button
-            // type="primary"
-            onClick={() => setVisible(true)}
-          >
-            导入
-          </Button>
-        </ Space>
-      }
+      title="客户管理123123"
+    // extra={
+    //   <Space>
+    //     <Button
+    //       type="primary"
+    //       onClick={() => setVisible(true)}
+    //     >
+    //       新增
+    //     </Button>
+    //     <Button
+    //       // type="primary"
+    //       onClick={() => setVisible(true)}
+    //     >
+    //       导入
+    //     </Button>
+    //   </ Space>
+    // }
     >
       <Form>
         <FormItem

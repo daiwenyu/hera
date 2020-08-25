@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Button, Input, Row, Col, Space } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { getVerifyCode } from '@/services/login';
 
 const FormItem = Form.Item;
 const { Password } = Input;

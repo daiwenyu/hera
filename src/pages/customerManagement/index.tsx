@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Table, Form, Input, Space, Button, Modal, Select, DatePicker, Tag } from 'antd';
+import { Card, Table, Form, Input, Space, Button, Modal, Select, DatePicker, Tag, Row, Col } from 'antd';
 import { Link } from 'umi';
 
 const FormItem = Form.Item;
@@ -43,7 +43,7 @@ function CustomerManagement() {
     title: '操作',
     dataIndex: '',
     render: value => (
-      <Link to="">详情</Link>
+      <Link to="/customerManagement/detail">详情</Link>
     )
   }];
 
@@ -68,23 +68,31 @@ function CustomerManagement() {
         </ Space>
       }
     >
-      <Form>
-        <FormItem
-          label="公司名称"
-        >
-          <Input />
-        </FormItem>
-        <FormItem
-          label="公司编号"
-        >
-          <Input />
-        </FormItem>
-        <FormItem>
-          <Space>
-            <Button>查询</Button>
-            <Button>重置</Button>
-          </Space>
-        </FormItem>
+      <Form layout="vertical">
+        <Row gutter={16}>
+          <Col span={6}>
+            <FormItem
+              label="公司名称"
+            >
+              <Input />
+            </FormItem>
+          </Col>
+          <Col span={6}>
+            <FormItem
+              label="公司编号"
+            >
+              <Input />
+            </FormItem>
+          </Col>
+          <Col span={6}>
+            <FormItem label=" ">
+              <Space>
+                <Button>查询</Button>
+                <Button>重置</Button>
+              </Space>
+            </FormItem>
+          </Col>
+        </Row>
       </Form>
       <Table
         columns={columns}
