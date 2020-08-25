@@ -1,11 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Button, Input, Row, Col, Space } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { getVerifyCode } from '@/services/login';
 
 const FormItem = Form.Item;
 const { Password } = Input;
 
 const Login: React.FC = (prop) => {
+  const [verifyCode, setVerifyCode] = useState('');
+
+  const getData = async () => {
+    // const data = await getVerifyCode({ key: 123 });
+    // const blob = new Blob([data]);
+    // const url = URL.createObjectURL(blob);
+    // console.log(url)
+    // setVerifyCode(url);
+  }
+
+  const onChangeVerifyCode = () => {
+    setVerifyCode(+new Date());
+  }
+
+  useEffect(() => {
+    // getData();
+    setVerifyCode(123)
+  }, []);
+
   return (
     <Row justify="space-around">
       <Col flex="368px" >
@@ -14,6 +34,7 @@ const Login: React.FC = (prop) => {
             padding: 8,
           }}
         >
+          <FormItem>ChangeView</FormItem>
           <FormItem>
             <Input
               size="large"
@@ -42,14 +63,21 @@ const Login: React.FC = (prop) => {
           </FormItem>
           <FormItem>
             <Space style={{ width: '100%' }}>
-              <Input />
+              <Input
+                style={{
+                  width: 245
+                }}
+                size="large"
+                placeholder="请输入验证码"
+              />
               <img
                 style={{
-                  width: 100
-
+                  width: 100,
+                  height: 40
                 }}
                 alt=""
-                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                src={`/park-crm-admin/login/verify/code?key=${verifyCode}`}
+                onClick={onChangeVerifyCode}
               />
             </Space>
           </FormItem>
