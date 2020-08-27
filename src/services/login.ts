@@ -17,3 +17,19 @@ export async function fakeAccountLogin(params: LoginParamsType) {
 export async function getFakeCaptcha(mobile: string) {
   return request(`/api/login/captcha?mobile=${mobile}`);
 }
+
+export async function login(params: {
+  account: string,
+  key: string | number,
+  userPwd: string,
+  verifyCode: string
+}) {
+  return request(`/park-crm-admin/login`, {
+    method: 'POST',
+    data: params
+  });
+}
+
+export async function logout() {
+  return request(`/park-crm-admin/login/out`);
+}
