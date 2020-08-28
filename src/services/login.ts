@@ -24,12 +24,12 @@ export async function login(params: {
   userPwd: string,
   verifyCode: string
 }) {
-  return request(`/park-crm-admin/login`, {
+  return request(`/api/login`, {
     method: 'POST',
     data: params
   });
 }
 
 export async function logout() {
-  return request(`/park-crm-admin/login/out`);
+  return request(`/api/login/out`);
 }

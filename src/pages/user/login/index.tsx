@@ -11,7 +11,7 @@ const FormItem = Form.Item;
 const { Password } = Input;
 
 const Login: React.FC<LoginProps> = props => {
-  const [key, setKey] = useState('');
+  const [key, setKey] = useState('123');
   const { dispatch } = props;
 
   const onChangeKey = () => {
@@ -30,7 +30,7 @@ const Login: React.FC<LoginProps> = props => {
   }
 
   useEffect(() => {
-    onChangeKey();
+    // onChangeKey();
   }, []);
 
   return (
@@ -103,7 +103,7 @@ const Login: React.FC<LoginProps> = props => {
                   cursor: 'pointer'
                 }}
                 alt="点击切换验证码"
-                src={`/park-crm-admin/login/verify/code?key=${key}`}
+                src={`/api/login/verify/code?key=${key}`}
                 onClick={onChangeKey}
               />
             </FormItem>
