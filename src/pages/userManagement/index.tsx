@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
-import { Card, Table, Form, Input, Space, Button, Modal, Select, Row, Col } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Card, Table, Form, Input, Space, Button, Modal, Select, Row, Col, message } from 'antd';
+import { connect } from 'umi';
+import { receipt } from '@/utils/utils';
 
 const FormItem = Form.Item;
 const { Option } = Select;
 
-function UserManagement() {
+function UserManagement(props) {
+  const {
+    dispatch,
+    userManagement
+  } = props;
   const [visible, setVisible] = useState(false);
   const [form] = Form.useForm();
+  const [searchForm] = Form.useForm();
 
   const columns = [{
     title: '用户编号',
@@ -31,6 +38,32 @@ function UserManagement() {
     )
   }];
 
+  const getUserList = () => {
+    dispatch({
+      type: 'userManagement/queryUserList',
+      payload: {}
+    });
+  }
+
+  const saveUserInfo = () => {
+    form.validateFields()
+      .then(async value => {
+        // console.log(value);
+        const res = await dispatch({
+          type: 'userManagement/addUser',
+          payload: value
+        });
+        receipt(res, { msg: '添加成功！' })
+          .then(() => {
+            setVisible(false);
+          });
+      })
+  }
+
+  useEffect(() => {
+    getUserList();
+  }, []);
+
   return (
     <Card
       title="用户管理"
@@ -43,7 +76,7 @@ function UserManagement() {
         </Button>
       }
     >
-      <Form layout="vertical">
+      <Form form={searchForm} layout="vertical">
         <Row gutter={16}>
           <Col span={6}>
             <FormItem
@@ -84,12 +117,7 @@ function UserManagement() {
         visible={visible}
         okText="保存"
         onCancel={() => setVisible(false)}
-        onOk={() => {
-          form.validateFields()
-            .then(value => {
-              console.log(value);
-            })
-        }}
+        onOk={saveUserInfo}
       >
         <Form
           form={form}
@@ -152,4 +180,4 @@ function UserManagement() {
   );
 }
 
-export default UserManagement;
+export default connect(({ userManagement }) => (userManagement))(UserManagement);

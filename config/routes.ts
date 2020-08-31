@@ -63,6 +63,12 @@ export default [
             component: './qualityManagement',
           },
           {
+            name: 'district-management',
+            icon: 'comment',
+            path: '/districtManagement',
+            component: './districtManagement',
+          },
+          {
             name: 'system-management',
             icon: 'setting',
             path: '/systemManagement',

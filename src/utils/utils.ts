@@ -1,6 +1,7 @@
-import {parse} from 'querystring';
-import {Route} from '@/models/connect';
-import {pathToRegexp} from 'path-to-regexp';
+import { message } from 'antd';
+import { parse } from 'querystring';
+import { Route } from '@/models/connect';
+import { pathToRegexp } from 'path-to-regexp';
 
 
 /* eslint no-useless-escape:0 import/prefer-default-export:0 */
@@ -17,7 +18,7 @@ export const isAntDesignPro = (): boolean => {
 
 // 给官方演示站点用，用于关闭真实开发环境不需要使用的特性
 export const isAntDesignProOrDev = (): boolean => {
-  const {NODE_ENV} = process.env;
+  const { NODE_ENV } = process.env;
   if (NODE_ENV === 'development') {
     return true;
   }
@@ -36,7 +37,7 @@ export const getAuthorityFromRouter = <T extends Route>(
   pathname: string,
 ): T | undefined => {
   const authority = router.find(
-    ({routes, path = '/', target = '_self'}) =>
+    ({ routes, path = '/', target = '_self' }) =>
       (path && target !== '_blank' && pathToRegexp(path).exec(pathname)) ||
       (routes && getAuthorityFromRouter(routes, pathname)),
   );
@@ -64,3 +65,26 @@ export const getRouteAuthority = (path: string, routeData: Route[]) => {
   });
   return authorities;
 };
+
+export const receipt = (
+  res: {
+    code: string;
+    message: string;
+  },
+  options: {
+    msg: string;
+  }
+) => {
+  const { code, message: msg } = res;
+  return new Promise((resolve, reject) => {
+    if (code === '000000') {
+      if (options.msg) {
+        message.success(options.msg);
+      }
+      resolve(res);
+    } else {
+      message.error(msg);
+      reject(res);
+    }
+  });
+}
