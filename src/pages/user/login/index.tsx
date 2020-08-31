@@ -1,26 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Button, Input, Row, Col, Space } from 'antd';
+import { Form, Button, Input, Row, Col, Space, Alert } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Link, connect, Dispatch } from 'umi';
 import { ConnectState } from '@/models/connect';
+import { StateType } from '@/models/login';
 
 interface LoginProps {
   dispatch: Dispatch;
+  userLogin: StateType
 }
 const FormItem = Form.Item;
 const { Password } = Input;
 
 const Login: React.FC<LoginProps> = props => {
-  const [key, setKey] = useState('123');
-  const { dispatch } = props;
+  const [key, setKey] = useState((+new Date()).toString());
+  const { dispatch, userLogin = {} } = props;
+  const { status } = userLogin;
 
   const onChangeKey = () => {
     setKey((+new Date()).toString());
   }
 
-  const onLogin = (values) => {
-    // console.log(values)
-    dispatch({
+  const onLogin = async (values: any) => {
+    await dispatch({
       type: 'login/login',
       payload: {
         ...values,
@@ -28,10 +30,6 @@ const Login: React.FC<LoginProps> = props => {
       },
     });
   }
-
-  useEffect(() => {
-    // onChangeKey();
-  }, []);
 
   return (
     <Row justify="space-around">
@@ -41,6 +39,21 @@ const Login: React.FC<LoginProps> = props => {
           onFinish={onLogin}
         >
           <FormItem>ChangeView</FormItem>
+          {
+            status && status !== '000000' ? (
+              <Alert
+                style={{
+                  marginBottom: 24,
+                }}
+                message={{
+                  100008: '验证码错误',
+                  100009: '用户名或密码错误'
+                }[status]}
+                type="error"
+                showIcon
+              />
+            ) : null
+          }
           <FormItem
             name="account"
             rules={[{

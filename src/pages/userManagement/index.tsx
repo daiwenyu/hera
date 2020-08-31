@@ -6,6 +6,7 @@ const { Option } = Select;
 
 function UserManagement() {
   const [visible, setVisible] = useState(false);
+  const [form] = Form.useForm();
 
   const columns = [{
     title: '用户编号',
@@ -83,33 +84,68 @@ function UserManagement() {
         visible={visible}
         okText="保存"
         onCancel={() => setVisible(false)}
+        onOk={() => {
+          form.validateFields()
+            .then(value => {
+              console.log(value);
+            })
+        }}
       >
-        <Form>
-          <FormItem label="姓名">
+        <Form
+          form={form}
+          labelCol={{
+            span: 4
+          }}
+          wrapperCol={{
+            span: 18
+          }}
+        >
+          <FormItem
+            label="姓名"
+            name="userName"
+            required
+          >
             <Input />
           </FormItem>
-          <FormItem label="手机号">
+          <FormItem
+            label="手机号"
+            name="mobile"
+            required
+          >
             <Input />
           </FormItem>
-          <FormItem label="账号">
+          <FormItem
+            label="账号"
+            name="account"
+            required
+          >
             <Input />
           </FormItem>
-          <FormItem label="密码">
+          <FormItem
+            label="密码"
+            name="password"
+            required
+          >
             <Input />
           </FormItem>
-          <FormItem label="所属部门">
+          <FormItem
+            label="所属部门"
+            name="depId"
+            initialValue={1}
+            required
+          >
             <Select>
               <Option value={1}>市场部</Option>
               <Option value={2}>管理部</Option>
             </Select>
           </FormItem>
-          <FormItem label="角色">
+          {/* <FormItem label="角色">
             <Select>
               <Option value={1}>管理员</Option>
               <Option value={2}>普通用户</Option>
               <Option value={3}>超级管理员</Option>
             </Select>
-          </FormItem>
+          </FormItem> */}
         </Form>
       </Modal>
     </Card>

@@ -5,7 +5,7 @@ import { getPageQuery } from '@/utils/utils';
 import { login, logout } from '@/services/login';
 
 export interface StateType {
-  status?: 'ok' | 'error';
+  status?: string;
   type?: string;
   currentAuthority?: 'user' | 'guest' | 'admin';
 }
@@ -31,16 +31,21 @@ const Model: LoginModelType = {
 
   effects: {
     * login({ payload }, { call, put }) {
-      const { } = yield call(login, payload);
+      const { code, result } = yield call(login, payload);
+
       const response = {
-        status: 'ok'
+        status: code
       };
+
       yield put({
         type: 'changeLoginStatus',
         payload: response,
       });
+
       // Login successfully
-      if (response.status === 'ok') {
+      if (response.status === '000000') {
+        // 设置sessionId
+        localStorage.setItem('cv_sessionId', result);
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params as { redirect: string };
@@ -60,7 +65,10 @@ const Model: LoginModelType = {
       }
     },
 
-    logout() {
+    *logout(_, { call }) {
+      const { code } = yield call(logout);
+      console.log(code)
+      localStorage.removeItem('cv_sessionId');
       const { redirect } = getPageQuery();
       // Note: There may be security issues, please note
       if (window.location.pathname !== '/user/login' && !redirect) {
