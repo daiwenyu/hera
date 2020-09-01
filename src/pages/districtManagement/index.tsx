@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'umi';
+import { connect } from 'dva';
 import { Card, Form, Input, Row, Col, Table, Space, Button } from 'antd';
 
 const FormItem = Form.Item;
@@ -26,6 +26,7 @@ function DistrictM(props) {
   }];
 
   const queryAreaList = async (values) => {
+    console.log(values);
     const data = await dispatch({
       type: 'districtM/queryAreaList',
       payload: values
