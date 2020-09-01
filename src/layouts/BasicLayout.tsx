@@ -5,7 +5,7 @@ import ProLayout, {
   Settings,
 } from '@ant-design/pro-layout';
 import { Link, useIntl, connect, Dispatch, history } from 'umi';
-import { Result, Button } from 'antd';
+import { Result, Button, } from 'antd';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState } from '@/models/connect';

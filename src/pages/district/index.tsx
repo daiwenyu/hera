@@ -1,12 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { Card, Form, Input, Row, Col, Table, Space, Button } from 'antd';
+import { Card, Form, Input, Row, Col, Table, Space, Button, Tag } from 'antd';
 
 const FormItem = Form.Item;
 
-function DistrictM(props) {
+function District(props) {
   const { dispatch } = props;
   const [dataSource, setDataSource] = useState([]);
+  const status = {
+    0: {
+      label: '不可用',
+      color: 'warning'
+    },
+    1: {
+      label: '正常',
+      color: 'success'
+    },
+    2: {
+      label: '删除',
+      color: 'error'
+    },
+  }
 
   const columns = [{
     title: '区部ID',
@@ -16,24 +30,43 @@ function DistrictM(props) {
     dataIndex: 'pareaName',
   }, {
     title: '创建时间',
+    align: 'center',
     dataIndex: 'create_time',
   }, {
     title: '状态',
     dataIndex: 'status',
+    align: 'center',
+    render: value => (
+      <Tag color={status[value].color}>
+        {status[value].label}
+      </Tag>
+    )
   }, {
     title: '操作',
     dataIndex: 'id',
+    align: 'center',
+    width: 120,
     render: value => (
       <Space>
-        <Button type="link" size="small">详情</Button>
-        <Button type="link" size="small">编辑</Button>
+        <Button
+          type="link"
+          size="small"
+        >
+          详情
+        </Button>
+        <Button
+          type="link"
+          size="small"
+        >
+          编辑
+        </Button>
       </Space>
     )
   }];
 
   const queryAreaList = async (values) => {
     const data = await dispatch({
-      type: 'districtM/queryAreaList',
+      type: 'district/queryAreaList',
       payload: values
     });
     setDataSource(data);
@@ -83,4 +116,4 @@ function DistrictM(props) {
   );
 }
 
-export default connect(({ districtM }) => ({ districtM }))(DistrictM);
+export default connect(({ district }) => ({ district }))(District);

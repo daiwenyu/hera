@@ -3,7 +3,7 @@ import { Card, Table, Form, Input, Space, Button, Modal, Select, DatePicker, Tag
 import { Link } from 'umi';
 
 const FormItem = Form.Item;
-const { Option } = Select;
+// const { Option } = Select;
 const { TextArea } = Input;
 
 function CustomerManagement() {

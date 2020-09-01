@@ -24,34 +24,24 @@ export interface LoginModelType {
 }
 
 const Model: LoginModelType = {
-  namespace: 'userManagement',
+  namespace: 'userMgmt',
 
   state: {
     status: undefined,
   },
 
   effects: {
-    *addUser({ payload }, { call, put }) {
+    *addUser({ payload }, { call }) {
       const res = yield call(addUser, payload);
       return res
     },
-    *editUser(_, { call }) {
-      const { code } = yield call(logout);
-      console.log(code)
-      localStorage.removeItem('cv_sessionId');
-      const { redirect } = getPageQuery();
-      // Note: There may be security issues, please note
-      if (window.location.pathname !== '/user/login' && !redirect) {
-        history.replace({
-          pathname: '/user/login',
-          search: stringify({
-            redirect: window.location.href,
-          }),
-        });
-      }
+    *editUser({ payload }, { call }) {
+      const res = yield call(editUser, payload);
+      return res;
     },
     *queryUserList({ payload }, { call }) {
-      const { } = yield call(queryUserList, payload);
+      const { result } = yield call(queryUserList, payload);
+      return result || [];
     },
   },
 

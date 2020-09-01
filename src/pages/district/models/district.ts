@@ -34,7 +34,7 @@ export interface LoginModelType {
 }
 
 const Model: LoginModelType = {
-  namespace: 'districtM',
+  namespace: 'district',
 
   state: {
     status: undefined,
@@ -46,31 +46,31 @@ const Model: LoginModelType = {
       return result || [];
     },
     *addAreaUser({ payload }, { call }) {
-      const { } = yield call(addAreaUser, payload);
+      // const { } = yield call(addAreaUser, payload);
     },
     *delAreaUser({ payload }, { call }) {
-      const { } = yield call(delAreaUser, payload);
+      // const { } = yield call(delAreaUser, payload);
     },
     *saveWechatCode({ payload }, { call }) {
-      const { } = yield call(saveWechatCode, payload);
+      // const { } = yield call(saveWechatCode, payload);
     },
     *queryAreaUser({ payload }, { call }) {
-      const { } = yield call(queryAreaUser, payload);
+      // const { } = yield call(queryAreaUser, payload);
     },
     *queryUncheckedAreaUser({ payload }, { call }) {
-      const { } = yield call(queryUncheckedAreaUser, payload);
+      // const { } = yield call(queryUncheckedAreaUser, payload);
     },
   },
 
   reducers: {
-    changeLoginStatus(state, { payload }) {
-      setAuthority(payload.currentAuthority);
-      return {
-        ...state,
-        status: payload.status,
-        type: payload.type,
-      };
-    },
+    // changeLoginStatus(state, { payload }) {
+    //   setAuthority(payload.currentAuthority);
+    //   return {
+    //     ...state,
+    //     status: payload.status,
+    //     type: payload.type,
+    //   };
+    // },
   },
 };
 
