@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Card, Form, Input, Row, Col, Table, Space, Button } from 'antd';
 
 const FormItem = Form.Item;
@@ -23,16 +23,17 @@ function DistrictM(props) {
   }, {
     title: '操作',
     dataIndex: 'id',
+    render: value => (
+      <Button>删除</Button>
+    )
   }];
 
   const queryAreaList = async (values) => {
-    console.log(values);
     const data = await dispatch({
       type: 'districtM/queryAreaList',
       payload: values
     });
     setDataSource(data);
-    // console.log(data);
   }
 
   useEffect(() => {
@@ -40,9 +41,7 @@ function DistrictM(props) {
   }, []);
 
   return (
-    <Card
-      title="区部管理"
-    >
+    <Card title="区部管理">
       <Form
         layout="vertical"
         onFinish={queryAreaList}
@@ -69,6 +68,7 @@ function DistrictM(props) {
           <Col span={24}>
             <Table
               bordered
+              rowKey="id"
               size="small"
               dataSource={dataSource}
               columns={columns}
@@ -80,8 +80,4 @@ function DistrictM(props) {
   );
 }
 
-export default connect(({
-  districtM
-}) => ({
-  districtM
-}))(DistrictM);
+export default connect(({ districtM }) => ({ districtM }))(DistrictM);

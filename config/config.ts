@@ -18,6 +18,9 @@ export default defineConfig({
   dynamicImport: {
     loading: '@/components/PageLoading/index',
   },
+  targets: {
+    ie: 11,
+  },
   routes,
   theme: {
     'primary-color': defaultSettings.primaryColor,
