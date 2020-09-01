@@ -6,7 +6,7 @@ export default [
       {
         name: 'login',
         path: '/user/login',
-        component: './user/login',
+        component: './login',
       },
     ],
   },
@@ -32,64 +32,64 @@ export default [
           {
             name: 'user-management',
             icon: 'user',
-            path: '/userManagement',
-            component: './userManagement',
+            path: '/user',
+            component: './user',
           },
           {
             name: 'project-management',
             icon: 'table',
-            path: '/projectManagement',
-            component: './projectManagement',
+            path: '/project',
+            component: './project',
           },
           {
             name: 'customer-management',
             icon: 'team',
-            path: '/customerManagement',
+            path: '/customer',
             routes: [{
               hideInMenu: true,
-              path: '/customerManagement',
-              component: './customerManagement',
+              path: '/customer',
+              component: './customer',
             }, {
               hideInMenu: true,
               name: 'detail',
-              path: '/customerManagement/detail',
-              component: './customerManagement/detail',
+              path: '/customer/detail',
+              component: './customer/detail',
             }]
           },
           {
             name: 'quality-management',
             icon: 'safety',
-            path: '/qualityManagement',
-            component: './qualityManagement',
+            path: '/quality',
+            component: './quality',
           },
           {
             name: 'district-management',
             icon: 'comment',
-            path: '/districtManagement',
-            component: './districtManagement',
+            path: '/district',
+            component: './district',
           },
-          {
-            name: 'system-management',
-            icon: 'setting',
-            path: '/systemManagement',
-            //component: './systemManagement',
-            routes: [{
-              name: 'menu',
-              icon: 'safety',
-              path: '/systemManagement/menu',
-              component: './systemManagement/menu',
-            }, {
-              name: 'role',
-              icon: 'safety',
-              path: '/systemManagement/role',
-              component: './systemManagement/role',
-            }, {
-              name: 'authority',
-              icon: 'safety',
-              path: '/systemManagement/authority',
-              component: './systemManagement/authority',
-            },]
-          },
+          // {
+          //   name: 'system-management',
+          //   icon: 'setting',
+          //   path: '/system',
+          //   //component: './system',
+          //   routes: [{
+          //     name: 'menu',
+          //     icon: 'safety',
+          //     path: '/system/menu',
+          //     component: './system/menu',
+          //   }, {
+          //     name: 'role',
+          //     icon: 'safety',
+          //     path: '/system/role',
+          //     component: './system/role',
+          //   }, {
+          //     name: 'authority',
+          //     icon: 'safety',
+          //     path: '/system/authority',
+          //     component: './system/authority',
+          //   },]
+          // },
           {
             component: './404',
           },

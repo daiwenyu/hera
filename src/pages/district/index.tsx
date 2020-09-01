@@ -24,7 +24,10 @@ function DistrictM(props) {
     title: '操作',
     dataIndex: 'id',
     render: value => (
-      <Button>删除</Button>
+      <Space>
+        <Button type="link" size="small">详情</Button>
+        <Button type="link" size="small">编辑</Button>
+      </Space>
     )
   }];
 
