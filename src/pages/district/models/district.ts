@@ -17,7 +17,7 @@ export interface StateType {
   currentAuthority?: 'user' | 'guest' | 'admin';
 }
 
-export interface LoginModelType {
+export interface DistrictModelType {
   namespace: string;
   state: StateType;
   effects: {
@@ -33,7 +33,7 @@ export interface LoginModelType {
   };
 }
 
-const Model: LoginModelType = {
+const Model: DistrictModelType = {
   namespace: 'district',
 
   state: {
@@ -55,7 +55,7 @@ const Model: LoginModelType = {
       // const { } = yield call(saveWechatCode, payload);
     },
     *queryAreaUser({ payload }, { call }) {
-      // const { } = yield call(queryAreaUser, payload);
+      const { } = yield call(queryAreaUser, payload);
     },
     *queryUncheckedAreaUser({ payload }, { call }) {
       // const { } = yield call(queryUncheckedAreaUser, payload);

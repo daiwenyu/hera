@@ -4,7 +4,7 @@ import { Card, Form, Input, Row, Col, Table, Space, Button, Tag } from 'antd';
 
 const FormItem = Form.Item;
 
-function District(props) {
+function DistrictMgmt(props) {
   const { dispatch } = props;
   const [dataSource, setDataSource] = useState([]);
   const status = {
@@ -52,6 +52,7 @@ function District(props) {
           type="link"
           size="small"
           onClick={() => {
+            // console.log('123123')
             dispatch({
               type: 'district/queryAreaUser',
               payload: {
@@ -124,4 +125,4 @@ function District(props) {
   );
 }
 
-export default connect(({ district }) => ({ district }))(District);
+export default connect(({ district }) => ({ district }))(DistrictMgmt);
