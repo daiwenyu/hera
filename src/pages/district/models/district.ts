@@ -9,7 +9,7 @@ import {
   saveWechatCode,
   queryAreaUser,
   queryUncheckedAreaUser
-} from '@/services/districtManagement';
+} from '@/services/district';
 
 export interface StateType {
   status?: string;

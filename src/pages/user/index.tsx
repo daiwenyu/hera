@@ -12,7 +12,8 @@ const { Option } = Select;
 function UserManagement(props) {
   const {
     dispatch,
-    userMgmt
+    userMgmt,
+    queryLoading
   } = props;
   const [form] = Form.useForm();
   const [searchForm] = Form.useForm();
@@ -34,6 +35,15 @@ function UserManagement(props) {
       color: 'error'
     }
   }
+
+  const getUserList = async () => {
+    const data = await dispatch({
+      type: 'userMgmt/queryUserList',
+      payload: {}
+    });
+    setDataSource(data);
+  }
+
   const columns = [{
     title: '账号',
     dataIndex: 'account',
@@ -76,7 +86,7 @@ function UserManagement(props) {
     dataIndex: 'id',
     align: 'center',
     width: 120,
-    render: (_, row) => (
+    render: (value, row) => row.status !== 2 ? (
       <Space>
         <Button
           type="link"
@@ -90,10 +100,18 @@ function UserManagement(props) {
         </Button>
         <Popconfirm
           title="确定删除？"
-          onConfirm={() => { }}
-        // onCancel={cancel}
-        // okText="Yes"
-        // cancelText="No"
+          onConfirm={async () => {
+            const res = await dispatch({
+              type: 'userMgmt/deleteUser',
+              payload: {
+                id: value
+              }
+            });
+            receipt(res, { msg: '删除成功！' })
+              .then(() => {
+                getUserList();
+              });
+          }}
         >
           <Button
             type="link"
@@ -103,16 +121,8 @@ function UserManagement(props) {
           </Button>
         </Popconfirm>
       </Space>
-    )
+    ) : null
   }];
-
-  const getUserList = async () => {
-    const data = await dispatch({
-      type: 'userMgmt/queryUserList',
-      payload: {}
-    });
-    setDataSource(data);
-  }
 
   const saveUserInfo = () => {
     form.validateFields()
@@ -203,6 +213,7 @@ function UserManagement(props) {
         </Row>
       </Form>
       <Table
+        loading={queryLoading}
         rowKey="id"
         bordered
         size="small"
@@ -291,4 +302,10 @@ function UserManagement(props) {
   );
 }
 
-export default connect(({ userMgmt }) => (userMgmt))(UserManagement);
+export default connect(({
+  userMgmt,
+  loading
+}) => ({
+  userMgmt,
+  queryLoading: loading.effects['userMgmt/queryUserList']
+}))(UserManagement);

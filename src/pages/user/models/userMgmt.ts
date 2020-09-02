@@ -1,8 +1,6 @@
-import { stringify } from 'querystring';
-import { history, Reducer, Effect } from 'umi';
+import { Effect } from 'umi';
 import { setAuthority } from '@/utils/authority';
-import { getPageQuery } from '@/utils/utils';
-import { addUser, editUser, queryUserList } from '@/services/userManagement';
+import { addUser, editUser, queryUserList, deleteUser } from '@/services/user';
 
 export interface StateType {
   status?: string;
@@ -17,6 +15,7 @@ export interface LoginModelType {
     addUser: Effect;
     editUser: Effect;
     queryUserList: Effect;
+    deleteUser: Effect;
   };
   reducers: {
     // changeLoginStatus: Reducer<StateType>;
@@ -43,6 +42,10 @@ const Model: LoginModelType = {
       const { result } = yield call(queryUserList, payload);
       return result || [];
     },
+    *deleteUser({ payload }, { call }) {
+      const res = yield call(deleteUser, payload);
+      return res;
+    }
   },
 
   reducers: {
