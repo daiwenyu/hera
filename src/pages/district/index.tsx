@@ -46,11 +46,19 @@ function District(props) {
     dataIndex: 'id',
     align: 'center',
     width: 120,
-    render: value => (
+    render: (value, row) => (
       <Space>
         <Button
           type="link"
           size="small"
+          onClick={() => {
+            dispatch({
+              type: 'district/queryAreaUser',
+              payload: {
+                ...row
+              }
+            });
+          }}
         >
           详情
         </Button>
