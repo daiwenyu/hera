@@ -201,6 +201,7 @@ function RegionMgmt(props) {
                 onChange={value => setSelectedId(value)}
               />
               <Button
+                type="primary"
                 onClick={async () => {
                   const data = uckAreaUser.find(v => v.id === selectedId);
                   const res = await dispatch({
