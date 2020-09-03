@@ -1,22 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Table, Form, Input, Space, Button, Modal, Select, DatePicker, Tag, Row, Col } from 'antd';
-import { Link } from 'umi';
+import { Link, connect } from 'umi';
 
 const FormItem = Form.Item;
 // const { Option } = Select;
 const { TextArea } = Input;
 
-function CustomerManagement() {
+function CustomerManagement({
+  dispatch,
+  customer
+}) {
   const [visible, setVisible] = useState(false);
-
-  const dataSource = [{
-    id: 'CP001',
-    name: '上海迪颉',
-    user: '佘涛',
-    adress: '上海徐汇区田林路113号',
-    status: 1,
-    date: '2020-08-06'
-  }];
+  const [customerList, setCustomerList] = useState([]);
 
   const columns = [{
     title: '公司编号',
@@ -46,7 +41,17 @@ function CustomerManagement() {
       <Link to="/customerManagement/detail">详情</Link>
     )
   }];
+  const getCustomerData = async () => {
+    const list = await dispatch({
+      type: 'customer/getCompanyList',
+      payload: {}
+    });
+    setCustomerList(list);
+  }
 
+  useEffect(() => {
+    getCustomerData();
+  }, []);
 
   return (
     <Card
@@ -96,7 +101,7 @@ function CustomerManagement() {
       </Form>
       <Table
         columns={columns}
-        dataSource={dataSource}
+        dataSource={customerList}
       />
       <Modal
         title="新增企业"
@@ -132,4 +137,8 @@ function CustomerManagement() {
   )
 }
 
-export default CustomerManagement;
+export default connect(({
+  customer
+}) => ({
+  customer
+}))(CustomerManagement);

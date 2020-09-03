@@ -37,14 +37,14 @@ export async function saveWechatCode(params: AreaUserInfo): Promise<any> {
 }
 
 export async function queryAreaUser(params: AreaUserInfo): Promise<any> {
-  return request('api/area/user', {
+  return request('/api/area/user', {
     method: 'POST',
     data: params,
   });
 }
 
 export async function queryUncheckedAreaUser(params: AreaUserInfo): Promise<any> {
-  return request('api/area/user/unchecked', {
+  return request('/api/area/user/unchecked', {
     method: 'POST',
     data: params,
   });

@@ -2,6 +2,7 @@ import { message } from 'antd';
 import { parse } from 'querystring';
 import { Route } from '@/models/connect';
 import { pathToRegexp } from 'path-to-regexp';
+import { uploadFile } from '@/services/global';
 
 
 /* eslint no-useless-escape:0 import/prefer-default-export:0 */

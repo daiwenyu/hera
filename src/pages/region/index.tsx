@@ -73,8 +73,8 @@ function RegionMgmt(props) {
     dataIndex: 'status',
     align: 'center',
     render: value => (
-      <Tag color={status[value].color}>
-        {status[value].label}
+      <Tag color={status[1].color}>
+        {status[1].label}
       </Tag>
     )
   }, {
@@ -162,7 +162,9 @@ function RegionMgmt(props) {
             >
               <Space>
                 <Button htmlType="submit">查询</Button>
-                <Button>重置</Button>
+                <Button onClick={() => {
+
+                }}>重置</Button>
               </Space>
             </FormItem>
           </Col>
