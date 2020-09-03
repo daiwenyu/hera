@@ -9,7 +9,7 @@ import {
   saveWechatCode,
   queryAreaUser,
   queryUncheckedAreaUser
-} from '@/services/district';
+} from '@/services/region';
 
 export interface StateType {
   status?: string;
@@ -17,7 +17,7 @@ export interface StateType {
   currentAuthority?: 'user' | 'guest' | 'admin';
 }
 
-export interface DistrictModelType {
+export interface RegionModelType {
   namespace: string;
   state: StateType;
   effects: {
@@ -33,8 +33,8 @@ export interface DistrictModelType {
   };
 }
 
-const Model: DistrictModelType = {
-  namespace: 'district',
+const Model: RegionModelType = {
+  namespace: 'region',
 
   state: {
     status: undefined,

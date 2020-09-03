@@ -63,13 +63,13 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       return Authorized.check(item.authority, localItem, null) as MenuDataItem;
     });
   }
-  useEffect(() => {
-    if (dispatch) {
-      dispatch({
-        type: 'user/fetchCurrent',
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (dispatch) {
+  //     dispatch({
+  //       type: 'user/fetchCurrent',
+  //     });
+  //   }
+  // }, []);
   /**
    * init variables
    */

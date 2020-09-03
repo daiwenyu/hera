@@ -63,10 +63,10 @@ export default [
             component: './quality',
           },
           {
-            name: 'district-management',
+            name: 'region-management',
             icon: 'comment',
-            path: '/district',
-            component: './district',
+            path: '/region',
+            component: './region',
           },
           // {
           //   name: 'system-management',

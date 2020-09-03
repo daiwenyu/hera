@@ -61,7 +61,7 @@ export default {
 
   'menu.quality-management': '质量管理',
 
-  'menu.district-management': '区部管理',
+  'menu.region-management': '区部管理',
 
   'menu.system-management': '系统管理',
   'menu.system-management.menu': '菜单管理',

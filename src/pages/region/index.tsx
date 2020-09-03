@@ -4,7 +4,7 @@ import { Card, Form, Input, Row, Col, Table, Space, Button, Tag } from 'antd';
 
 const FormItem = Form.Item;
 
-function DistrictMgmt(props) {
+function RegionMgmt(props) {
   const { dispatch } = props;
   const [dataSource, setDataSource] = useState([]);
   const status = {
@@ -63,12 +63,12 @@ function DistrictMgmt(props) {
         >
           详情
         </Button>
-        <Button
+        {/* <Button
           type="link"
           size="small"
         >
           编辑
-        </Button>
+        </Button> */}
       </Space>
     )
   }];
@@ -125,4 +125,4 @@ function DistrictMgmt(props) {
   );
 }
 
-export default connect(({ district }) => ({ district }))(DistrictMgmt);
+export default connect(({ district }) => ({ district }))(RegionMgmt);
