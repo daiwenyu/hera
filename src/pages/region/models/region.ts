@@ -41,24 +41,28 @@ const Model: RegionModelType = {
   },
 
   effects: {
-    *queryAreaList({ payload }, { call, put }) {
+    *queryAreaList({ payload }, { call }) {
       const { result } = yield call(queryAreaList, payload);
       return result || [];
     },
     *addAreaUser({ payload }, { call }) {
-      // const { } = yield call(addAreaUser, payload);
+      const res = yield call(addAreaUser, payload);
+      return res;
     },
     *delAreaUser({ payload }, { call }) {
-      // const { } = yield call(delAreaUser, payload);
+      const res = yield call(delAreaUser, payload);
+      return res;
     },
     *saveWechatCode({ payload }, { call }) {
       // const { } = yield call(saveWechatCode, payload);
     },
     *queryAreaUser({ payload }, { call }) {
-      const { } = yield call(queryAreaUser, payload);
+      const { result } = yield call(queryAreaUser, payload);
+      return result || [];
     },
     *queryUncheckedAreaUser({ payload }, { call }) {
-      // const { } = yield call(queryUncheckedAreaUser, payload);
+      const { result } = yield call(queryUncheckedAreaUser, payload);
+      return result || [];
     },
   },
 
