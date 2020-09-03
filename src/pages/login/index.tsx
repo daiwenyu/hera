@@ -4,6 +4,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Link, connect, Dispatch } from 'umi';
 import { ConnectState } from '@/models/connect';
 import { StateType } from '@/models/login';
+import { Color } from 'chalk';
 
 interface LoginProps {
   dispatch: Dispatch;
@@ -38,7 +39,16 @@ const Login: React.FC<LoginProps> = props => {
           style={{ padding: 8 }}
           onFinish={onLogin}
         >
-          <FormItem>ChangeView</FormItem>
+          <FormItem
+            style={{
+              fontSize: 30,
+              textAlign: 'center',
+              fontWeight: 'bold',
+              color: '#1f1f1f'
+            }}
+          >
+            Change View - Admin
+          </FormItem>
           {
             status && status !== '000000' ? (
               <Alert
