@@ -73,22 +73,26 @@ export default [
             icon: 'setting',
             path: '/system',
             //component: './system',
-            routes: [{
-              name: 'menu',
-              icon: 'safety',
-              path: '/system/menu',
-              component: './system/menu',
-            }, {
-              name: 'role',
-              icon: 'safety',
-              path: '/system/role',
-              component: './system/role',
-            }, {
-              name: 'authority',
-              icon: 'safety',
-              path: '/system/authority',
-              component: './system/authority',
-            },]
+            routes: [
+              {
+                name: 'menu',
+                icon: 'safety',
+                path: '/system/menu',
+                component: './system/menu',
+              },
+              {
+                name: 'role',
+                icon: 'safety',
+                path: '/system/role',
+                component: './system/role',
+              },
+              {
+                name: 'authority',
+                icon: 'safety',
+                path: '/system/authority',
+                component: './system/authority',
+              }
+            ]
           },
           {
             component: './404',

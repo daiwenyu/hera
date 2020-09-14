@@ -16,6 +16,7 @@
     "not ie <= 10"
   ],
   "dependencies": {
+    "@ant-design/charts": "^0.9.13",
     "@ant-design/icons": "^4.2.2",
     "@ant-design/pro-layout": "^6.4.16",
     "@ant-design/pro-table": "^2.7.2",
