@@ -47,7 +47,7 @@ const Login: React.FC<LoginProps> = props => {
               color: '#1f1f1f'
             }}
           >
-            Change View - Admin
+            Example - Admin
           </FormItem>
           {
             status && status !== '000000' ? (

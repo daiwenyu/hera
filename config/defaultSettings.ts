@@ -15,7 +15,7 @@ const proSettings: DefaultSettings = {
   menu: {
     locale: true,
   },
-  title: 'ChangeView',
+  title: 'Example',
   pwa: false,
   iconfontUrl: '',
 };
