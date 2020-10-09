@@ -120,8 +120,8 @@ const DemoPie: React.FC = () => {
 export default () => {
   return (
     <>
-      <DemoColumn />
-      <DemoPie />
+      {/* <DemoColumn /> */}
+      {/* <DemoPie /> */}
     </>
   )
 }
