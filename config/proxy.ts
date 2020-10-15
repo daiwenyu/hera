@@ -1,7 +1,7 @@
 export default {
   dev: {
     '/api': {
-      target: 'http://47.96.139.121:8085/park-crm-admin',
+      target: '',
       // changeOrigin: true,
       //pathRewrite: { '^': '' },
     },
