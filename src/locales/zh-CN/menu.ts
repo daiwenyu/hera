@@ -67,4 +67,5 @@ export default {
   'menu.system-management.menu': '菜单管理',
   'menu.system-management.role': '角色管理',
   'menu.system-management.authority': '系统管理',
+  'menu.tag': '标签',
 };

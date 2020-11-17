@@ -34,6 +34,12 @@ export default [
             ]
           },
           {
+            name: 'tag',
+            path: '/tag',
+            icon: 'tags',
+            component: './tag'
+          },
+          {
             component: './404',
           },
         ],
