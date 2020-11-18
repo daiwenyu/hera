@@ -211,10 +211,11 @@ function YYTag() {
     77: 'flot',
   }
 
-  const getTagTmplData = (type, formOpts = {}) => {
+  const getTagTmplData = (type, formOpts = {}, tagId) => {
     const uuid = uuidv4();
     return {
       ...tmpData[type],
+      tagId,
       key: uuid,
       form: {
         ...tmpData[type].form,
@@ -228,13 +229,13 @@ function YYTag() {
     const type = conf[tag.id];
 
     if (tagsData.length % 2 === 0) {
-      setTagsData([...tagsData, getTagTmplData(type)]);
+      setTagsData([...tagsData, getTagTmplData(type, {}, tag.id)]);
     } else {
-      setTagsData([...tagsData, getTagTmplData('factor'), getTagTmplData(type)]);
+      setTagsData([...tagsData, getTagTmplData('factor'), getTagTmplData(type, {}, tag.id)]);
     }
   }
 
-  const deleteTag = (key, index) => {
+  const deleteTag = (data, index) => {
     if (index === 0) {
       // 删除头部
       setTagsData(tagsData.filter((v, i) => i > 1));
@@ -253,7 +254,7 @@ function YYTag() {
     const startValue = form.getFieldValue(tagsData[start].key);
     const endValue = form.getFieldValue(tagsData[end].key);
     const newData = [...tagsData];
-    newData.splice(start, 3, getTagTmplData('factor', { value: startValue && endValue }));
+    newData.splice(start, 3, getTagTmplData('factor', { value: startValue && endValue }, data.id));
     setTagsData(newData);
   }
 
@@ -268,9 +269,12 @@ function YYTag() {
                   {
                     category.tags.map(tag => (
                       <div
-                        onClick={() => { addTag(tag) }}
+                        onClick={() => { tagsData.find(v => v.tagId === tag.id) ? null : addTag(tag) }}
                         key={tag.id}
                         className={styles.tag}
+                        style={{
+                          backgroundColor: tagsData.find(v => v.tagId === tag.id) ? '#d9d9d9' : '#ffffff'
+                        }}
                       >
                         {tag.label}
                       </div>
@@ -294,7 +298,7 @@ function YYTag() {
                   type={v.type}
                   label={v.label}
                   form={v.form}
-                  onDelete={() => deleteTag(v.key, i)}
+                  onDelete={() => deleteTag(v, i)}
                 />
               ))
             }

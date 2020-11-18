@@ -83,9 +83,17 @@ function TFactor() {
       id, value
     }
   } = useContext(TagsProps);
-
+  const [visiable, setVisiable] = useState(value);
   return (
-    <Card bordered={false} size="small">
+    <div className={styles.factor}>
+      {
+        visiable ? (
+          <>
+            <div className={styles.topLine} />
+            <div className={styles.bottomLine} />
+          </>
+        ) : null
+      }
       <FormItem
         name={id}
         initialValue={value}
@@ -95,9 +103,10 @@ function TFactor() {
         <Switch
           checkedChildren="且"
           unCheckedChildren="或"
+          onChange={(checked) => setVisiable(checked)}
         />
       </FormItem>
-    </Card>
+    </div>
   );
 }
 
