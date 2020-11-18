@@ -1,32 +1,12 @@
 import React, { useState } from 'react';
-import { Button, Card, Form, Collapse, Tag, Select, Slider, Switch, DatePicker, Row, Col, Space, InputNumber } from 'antd';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { Button, Card, Form, Collapse, Row, Col, } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment';
 import Tags from '@/components/Tags';
 import styles from './index.less';
 
 const FormItem = Form.Item;
-const { Option } = Select;
-const { RangePicker } = DatePicker;
 const { Panel } = Collapse;
-
-const getItemStyle = (isDragging, draggableStyle) => ({
-  // some basic styles to make the items look a bit nicer
-  userSelect: "none",
-
-  // change background colour if dragging
-  background: isDragging ? "lightgreen" : "grey",
-
-  // styles we need to apply on draggables
-  ...draggableStyle
-});
-
-const getListStyle = isDraggingOver => ({
-  background: isDraggingOver ? "lightblue" : "lightgrey",
-  // padding: grid,
-  // width: 250
-});
 
 const tmpData = {
   select: {
@@ -175,40 +155,8 @@ const tmpData = {
   }
 }
 
-
 function YYTag() {
-  const treeData = [
-    {
-      title: 'parent 1',
-      key: '0-0',
-      children: [
-        {
-          title: 'parent 1-0',
-          key: '0-0-0',
-          disabled: true,
-          children: [
-            {
-              title: 'leaf',
-              key: '0-0-0-0',
-              disableCheckbox: true,
-            },
-            {
-              title: 'leaf',
-              key: '0-0-0-1',
-            },
-          ],
-        },
-        {
-          title: 'parent 1-1',
-          key: '0-0-1',
-          children: [{ title: <span style={{ color: '#1890ff' }}>sss</span>, key: '0-0-1-0' }],
-        },
-      ],
-    },
-  ];
-
   const [tagsData, setTagsData] = useState([]);
-
   const [tagsList, setTagsList] = useState([{
     label: '基础信息',
     key: '1',
@@ -251,96 +199,117 @@ function YYTag() {
     key: '5',
     tags: []
   }]);
+  const [form] = Form.useForm();
+
+  const conf = {
+    11: 'select',
+    22: 'checkbox',
+    33: 'radiobox',
+    44: 'date',
+    55: 'time',
+    66: 'datetime',
+    77: 'flot',
+  }
+
+  const getTagTmplData = (type, formOpts = {}) => {
+    const uuid = uuidv4();
+    return {
+      ...tmpData[type],
+      key: uuid,
+      form: {
+        ...tmpData[type].form,
+        id: uuid,
+        ...formOpts
+      }
+    }
+  }
+
+  const addTag = (tag) => {
+    const type = conf[tag.id];
+
+    if (tagsData.length % 2 === 0) {
+      setTagsData([...tagsData, getTagTmplData(type)]);
+    } else {
+      setTagsData([...tagsData, getTagTmplData('factor'), getTagTmplData(type)]);
+    }
+  }
+
+  const deleteTag = (key, index) => {
+    if (index === 0) {
+      // 删除头部
+      setTagsData(tagsData.filter((v, i) => i > 1));
+      return;
+    }
+
+    if (index === tagsData.length - 1) {
+      // 删除尾部
+      setTagsData(tagsData.filter((v, i) => i < tagsData.length - 2));
+      return;
+    }
+
+    // 其他
+    const start = index - 1;
+    const end = index + 1;
+    const startValue = form.getFieldValue(tagsData[start].key);
+    const endValue = form.getFieldValue(tagsData[end].key);
+    const newData = [...tagsData];
+    newData.splice(start, 3, getTagTmplData('factor', { value: startValue && endValue }));
+    setTagsData(newData);
+  }
 
   return (
     <Card>
-      <DragDropContext
-        onDragEnd={(result, provided) => {
-          console.log(result, provided);
-        }}
-      >
+      <Row gutter={16}>
+        <Col flex="200px">
+          <Collapse defaultActiveKey="1">
+            {
+              tagsList.map(category => (
+                <Panel header={category.label} key={category.key}>
+                  {
+                    category.tags.map(tag => (
+                      <div
+                        onClick={() => { addTag(tag) }}
+                        key={tag.id}
+                        className={styles.tag}
+                      >
+                        {tag.label}
+                      </div>
+                    ))
+                  }
+                </Panel>
+              ))
+            }
+          </Collapse>
+        </Col>
 
-        <Row gutter={16}>
-          <Col flex="200px">
-
-            <Collapse defaultActiveKey="1">
-              {
-                tagsList.map(category => (
-                  <Panel header={category.label} key={category.key}>
-                    <Droppable droppableId="droppable-12" >
-                      {(provided, snapshot) => (
-                        <div
-                          ref={provided.innerRef}
-                          // style={{ backgroundColor: snapshot.isDraggingOver ? 'blue' : 'grey' }}
-                          {...provided.droppableProps}
-                        >
-                          {
-                            category.tags.map((tag, index) => (
-                              <Draggable
-                                key={tag.id}
-                                draggableId={tag.id}
-                                index={index}
-                              >
-                                {
-                                  (provided, snapshot) => (
-                                    <div
-                                      className={styles.tag}
-                                      ref={provided.innerRef}
-                                      {...provided.draggableProps}
-                                      {...provided.dragHandleProps}
-                                    >
-                                      {tag.label}
-                                    </div>
-                                  )
-                                }
-                              </Draggable>
-                            ))
-                          }
-                        </div>
-                      )}
-                    </Droppable>
-                  </Panel>
-                ))
-              }
-            </Collapse>
-          </Col>
-
-          <Col flex="auto">
-            <Form
-              onFinish={(values) => { console.log(values) }}
-            >
-              <Droppable droppableId="droppable">
-                {
-                  (provided, snapshot) => (
-                    <div
-                      {...provided.droppableProps}
-                      ref={provided.innerRef}
-                    // style={getListStyle(snapshot.isDraggingOver)}
-                    >
-                      {
-                        tagsData.map(v => (
-                          <Tags
-                            key={v.key}
-                            type={v.type}
-                            label={v.label}
-                            form={v.form}
-                            onDelete={(data) => {
-                              console.log(v.id)
-                            }}
-                          />
-                        ))
-                      }
-                      <FormItem>
-                        <Button htmlType="submit">确定</Button>
-                      </FormItem>
-                    </div>
-                  )
-                }
-              </Droppable>
-            </Form>
-          </Col>
-        </Row>
-      </DragDropContext>
+        <Col flex="auto">
+          <Form
+            form={form}
+            onFinish={(values) => { console.log(values) }}
+          >
+            {
+              tagsData.map((v, i) => (
+                <Tags
+                  key={v.key}
+                  type={v.type}
+                  label={v.label}
+                  form={v.form}
+                  onDelete={() => deleteTag(v.key, i)}
+                />
+              ))
+            }
+            {
+              tagsData.length ? (
+                <Card size="small" bordered={false} style={{ textAlign: 'center' }}>
+                  <FormItem>
+                    <Button type="primary" htmlType="submit">确定</Button>
+                  </FormItem>
+                </Card>
+              ) : null
+            }
+          </Form>
+        </Col>
+      </Row>
     </Card >
   )
 }
