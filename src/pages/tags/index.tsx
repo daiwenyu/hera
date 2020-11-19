@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { Button, Card, Form, Collapse, Row, Col, } from 'antd';
+import {
+  Button, Card, Form, Collapse, Row,
+  Col, Input, Space, Select,
+} from 'antd';
 import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment';
 import Tags from '@/components/Tags';
@@ -7,6 +10,7 @@ import styles from './index.less';
 
 const FormItem = Form.Item;
 const { Panel } = Collapse;
+const { Option } = Select;
 
 const tmpData = {
   select: {
@@ -260,37 +264,73 @@ function YYTag() {
 
   return (
     <Card>
-      <Row gutter={16}>
-        <Col flex="200px">
-          <Collapse defaultActiveKey="1">
-            {
-              tagsList.map(category => (
-                <Panel header={category.label} key={category.key}>
-                  {
-                    category.tags.map(tag => (
-                      <div
-                        onClick={() => { tagsData.find(v => v.tagId === tag.id) ? null : addTag(tag) }}
-                        key={tag.id}
-                        className={styles.tag}
-                        style={{
-                          backgroundColor: tagsData.find(v => v.tagId === tag.id) ? '#d9d9d9' : '#ffffff'
-                        }}
-                      >
-                        {tag.label}
-                      </div>
-                    ))
-                  }
-                </Panel>
-              ))
-            }
-          </Collapse>
-        </Col>
+      <Form
+        form={form}
+        onFinish={(values) => { console.log(values) }}
+      >
 
-        <Col flex="auto">
-          <Form
-            form={form}
-            onFinish={(values) => { console.log(values) }}
-          >
+        <Row gutter={16}>
+          <Col span={8}>
+            <FormItem label="客群名称">
+              XXXX客群
+            </FormItem>
+          </Col>
+          <Col span={8}>
+            <FormItem label="刷新频率">
+              <Select
+                options={[{
+                  label: '每天',
+                  value: 1
+                }, {
+                  label: '每周',
+                  value: 2
+                }, {
+                  label: '每月',
+                  value: 3
+                }, {
+                  label: '自定义刷新周期',
+                  value: 4
+                }]}
+              />
+            </FormItem>
+          </Col>
+          <Col span={8}>
+            <FormItem label=" " colon={false}>
+              <Space>
+                <Button type="primary" htmlType="submit">确定</Button>
+                <Button>取消</Button>
+              </Space>
+            </FormItem>
+          </Col>
+        </Row>
+
+        <Row gutter={16}>
+          <Col flex="200px">
+            <Collapse defaultActiveKey="1">
+              {
+                tagsList.map(category => (
+                  <Panel header={category.label} key={category.key}>
+                    {
+                      category.tags.map(tag => (
+                        <div
+                          onClick={() => { tagsData.find(v => v.tagId === tag.id) ? null : addTag(tag) }}
+                          key={tag.id}
+                          className={styles.tag}
+                          style={{
+                            backgroundColor: tagsData.find(v => v.tagId === tag.id) ? '#d9d9d9' : '#ffffff'
+                          }}
+                        >
+                          {tag.label}
+                        </div>
+                      ))
+                    }
+                  </Panel>
+                ))
+              }
+            </Collapse>
+          </Col>
+
+          <Col flex="auto">
             {
               tagsData.map((v, i) => (
                 <Tags
@@ -302,18 +342,9 @@ function YYTag() {
                 />
               ))
             }
-            {
-              tagsData.length ? (
-                <Card size="small" bordered={false} style={{ textAlign: 'center' }}>
-                  <FormItem>
-                    <Button type="primary" htmlType="submit">确定</Button>
-                  </FormItem>
-                </Card>
-              ) : null
-            }
-          </Form>
-        </Col>
-      </Row>
+          </Col>
+        </Row>
+      </Form>
     </Card >
   )
 }

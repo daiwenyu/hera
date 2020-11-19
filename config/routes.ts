@@ -8,36 +8,56 @@ export default [
         component: '../layouts/BasicLayout',
         authority: ['admin', 'user'],
         routes: [
+          // {
+          //   name: 'system-management',
+          //   icon: 'setting',
+          //   path: '/system',
+          //   routes: [
+          //     {
+          //       name: 'menu',
+          //       icon: 'safety',
+          //       path: '/system/menu',
+          //       component: './system/menu',
+          //     },
+          //     {
+          //       name: 'role',
+          //       icon: 'safety',
+          //       path: '/system/role',
+          //       component: './system/role',
+          //     },
+          //     {
+          //       name: 'authority',
+          //       icon: 'safety',
+          //       path: '/system/authority',
+          //       component: './system/authority',
+          //     }
+          //   ]
+          // },
           {
-            name: 'system-management',
-            icon: 'setting',
-            path: '/system',
+            name: 'tags',
+            path: '/tags',
+            icon: 'tags',
             routes: [
               {
-                name: 'menu',
-                icon: 'safety',
-                path: '/system/menu',
-                component: './system/menu',
+                path: '/tags',
+                redirect: '/tags/list'
               },
               {
-                name: 'role',
-                icon: 'safety',
-                path: '/system/role',
-                component: './system/role',
+                name: 'list',
+                path: '/tags/list',
+                component: './tags/list',
               },
               {
-                name: 'authority',
-                icon: 'safety',
-                path: '/system/authority',
-                component: './system/authority',
+                name: 'category',
+                path: '/tags/category',
+                component: './tags/category',
+              },
+              {
+                name: 'marking',
+                path: '/tags/marking',
+                component: './tags/marking',
               }
             ]
-          },
-          {
-            name: 'tag',
-            path: '/tag',
-            icon: 'tags',
-            component: './tag'
           },
           {
             component: './404',

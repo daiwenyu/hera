@@ -67,5 +67,11 @@ export default {
   'menu.system-management.menu': '菜单管理',
   'menu.system-management.role': '角色管理',
   'menu.system-management.authority': '系统管理',
-  'menu.tag': '标签',
+
+  'menu.tags': '标签管理',
+  'menu.tags.list': '标签列表',
+  'menu.tags.create': '创建标签',
+  'menu.tags.category': '标签分类',
+  'menu.tags.marking': '会员打标',
+  // 'menu.tag': '标签',
 };
