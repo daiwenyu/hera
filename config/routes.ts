@@ -45,7 +45,18 @@ export default [
               {
                 name: 'list',
                 path: '/tags/list',
-                component: './tags/list',
+                hideChildrenInMenu: true,
+                routes: [
+                  {
+                    path: '/tags/list',
+                    component: './tags/list',
+                  },
+                  {
+                    name: 'create',
+                    path: '/tags/list/create',
+                    component: './tags/create',
+                  }
+                ]
               },
               {
                 name: 'category',

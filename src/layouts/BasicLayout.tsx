@@ -3,6 +3,7 @@ import ProLayout, {
   MenuDataItem,
   BasicLayoutProps as ProLayoutProps,
   Settings,
+  PageContainer
 } from '@ant-design/pro-layout';
 import { Link, useIntl, connect, Dispatch, history } from 'umi';
 import { Result, Button, } from 'antd';
@@ -101,10 +102,10 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
         return <Link to={menuItemProps.path}>{defaultDom}</Link>;
       }}
       breadcrumbRender={(routers = []) => [
-        {
-          path: '/',
-          breadcrumbName: formatMessage({ id: 'menu.home' }),
-        },
+        // {
+        //   path: '/',
+        //   breadcrumbName: formatMessage({ id: 'menu.home' }),
+        // },
         ...routers,
       ]}
       itemRender={(route, params, routes, paths) => {
@@ -122,7 +123,9 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       {...settings}
     >
       <Authorized authority={authorized!.authority} noMatch={noMatch}>
-        {children}
+        <PageContainer ghost header={{ title: '' }}>
+          {children}
+        </PageContainer>
       </Authorized>
     </ProLayout>
   );
@@ -132,3 +135,4 @@ export default connect(({ global, settings }: ConnectState) => ({
   collapsed: global.collapsed,
   settings,
 }))(BasicLayout);
+
