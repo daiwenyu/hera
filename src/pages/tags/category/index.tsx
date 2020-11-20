@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Table, Input, Button, Modal, Form, Select } from 'antd';
+import { Table, Input, Button, Modal, Form, Select, Space } from 'antd';
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -34,25 +34,23 @@ function Category() {
         // console.log(record)
         if (Array.isArray(record.children) && record.children.length) {
           return (
-            <Button
-              type="link"
+            <a
               onClick={() => {
                 setNodeVisible(true);
               }}
             >
               新建子节点
-            </Button>
+            </a>
           );
         }
         return (
-          <Button
-            type="link"
+          <a
             onClick={() => {
               setTagVisible(true);
             }}
           >
             标签管理
-          </Button>
+          </a>
         );
       }
     }
@@ -189,10 +187,10 @@ function Category() {
               align: 'center',
               render: (text, record, index) => {
                 return (
-                  <>
-                    <Button type="link">标签设置</Button>
-                    <Button type="link">取消关联</Button>
-                  </>
+                  <Space>
+                    <a>标签设置</a>
+                    <a>取消关联</a>
+                  </Space>
                 )
               }
             }]}
