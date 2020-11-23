@@ -112,6 +112,11 @@ function List() {
         <Menu
           onClick={({ key }) => {
             console.log(key)
+
+            if (key === "3") {
+              history.push('/tags/list/configuration');
+            }
+
           }}
         >
           <Menu.Item key="1">
@@ -125,6 +130,11 @@ function List() {
             </Button>
           </Menu.Item>
           <Menu.Item key="3">
+            <Button size="small" type="link">
+              设置
+            </Button>
+          </Menu.Item>
+          <Menu.Item key="4">
             <Button size="small" type="link">
               删除
             </Button>
@@ -158,7 +168,14 @@ function List() {
           </Tabs>
         }
         toolBarRender={() => [
-          <Button type="primary" onClick={() => { setVisible(true) }}>新建</Button>
+          <Button
+            type="primary"
+            onClick={() => {
+              setVisible(true);
+            }}
+          >
+            新建
+          </Button>
         ]}
         columns={[...(activeTab === '1' ? autoColumns : manualColumns), ...actionOpt]}
         request={() => {

@@ -55,7 +55,12 @@ export default [
                     name: 'create',
                     path: '/tags/list/create',
                     component: './tags/create',
-                  }
+                  },
+                  {
+                    name: 'configuration',
+                    path: '/tags/list/configuration',
+                    component: './tags/configuration',
+                  },
                 ]
               },
               {

@@ -72,6 +72,7 @@ export default {
 
   'menu.tags.list': '标签列表',
   'menu.tags.list.create': '创建标签',
+  'menu.tags.list.configuration': '标签设置',
 
   'menu.tags.category': '标签分类',
 
