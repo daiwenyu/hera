@@ -76,7 +76,14 @@ function Configuration() {
 
             <Button type="dashed" block icon={<PlusOutlined />}>
               添加标签值
-          </Button>
+            </Button>
+          </Space>
+        </Card>
+
+        <Card style={{ textAlign: 'center' }}>
+          <Space size="large">
+            <Button type="primary">确定</Button>
+            <Button>取消</Button>
           </Space>
         </Card>
       </Space>

@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
-import { Button, Modal, Input, Card, Col, Row, Table, Space, Menu, Form, Tabs, Dropdown } from 'antd';
-import { EllipsisOutlined } from '@ant-design/icons';
+import {
+  Button, Modal, Menu, Form, Tabs,
+  Dropdown, message
+} from 'antd';
+import { EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
+import ProForm, { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import { history } from 'umi';
 
 const { TabPane } = Tabs;
-const { TextArea } = Input;
 const FormItem = Form.Item;
 
 function List() {
   const [activeTab, setActiveTab] = useState('1');
-  const [visible, setVisible] = useState(false);
   const [userListVisible, setUserListVisible] = useState(false);
+  const [activeData, setActiveData] = useState(undefined);
 
-  const autoColumns = [
+  const spliceColumns = (customizeColumns = []) => [
     {
       title: '标签ID',
       dataIndex: 'id',
@@ -28,53 +31,7 @@ function List() {
       dataIndex: 'money1',
       search: false
     },
-    {
-      title: '创建时间',
-      dataIndex: 'money2',
-      search: false
-    },
-    {
-      title: '创建人',
-      dataIndex: 'money3',
-      search: false
-    },
-    {
-      title: '更新时间',
-      dataIndex: 'money4',
-      search: false
-    },
-    {
-      title: '更新人',
-      dataIndex: 'money5',
-      search: false
-    },
-    {
-      title: '状态',
-      dataIndex: 'money6',
-      // width: 500,
-    },
-
-  ];
-  const manualColumns = [
-    {
-      title: '标签ID',
-      dataIndex: 'id',
-      search: false
-    },
-    {
-      title: '标签名称',
-      dataIndex: 'money',
-    },
-    {
-      title: '标签描述',
-      dataIndex: 'money1',
-      search: false
-    },
-    {
-      title: '用户数',
-      dataIndex: 'money1',
-      search: false
-    },
+    ...customizeColumns,
     {
       title: '创建时间',
       dataIndex: 'money2',
@@ -100,6 +57,52 @@ function List() {
       dataIndex: 'money6',
     },
   ];
+
+  const autoColumns = spliceColumns();
+  const manualColumns = spliceColumns([{
+    title: '用户数',
+    dataIndex: 'money12',
+    search: false
+  }]);
+
+  const renderTagInfo = (trigger) => {
+    return (
+      <ModalForm
+        key="info"
+        title={activeData ? '编辑标签' : "创建标签"}
+        width={480}
+        trigger={trigger}
+        onFinish={async (values) => {
+          console.log(values);
+          // message.success('提交成功！');
+          // history.push('/tags/list/create')
+          // return true;
+        }}
+        onVisibleChange={(visible) => {
+          if (!visible) {
+            setActiveData(undefined);
+          }
+        }}
+      >
+        <ProFormText
+          label="标签名称"
+          name="tagName"
+          rules={[{
+            required: true,
+          }, {
+            max: 10
+          }]}
+        />
+        <ProFormTextArea
+          label="标签描述"
+          name="tagDesc"
+          rules={[{
+            max: 50
+          }]}
+        />
+      </ModalForm>
+    );
+  }
 
   const actionOpt = [{
     title: '操作',
@@ -107,16 +110,17 @@ function List() {
     valueType: 'option',
     align: 'center',
     fixed: 'right',
+    width: 200,
     render: (text, row, _, action) => {
       const menu = (
         <Menu
           onClick={({ key }) => {
             console.log(key)
-
-            if (key === "3") {
-              history.push('/tags/list/configuration');
+            const handler = {
+              2: () => { setActiveData(row) },
+              3: () => { history.push('/tags/list/configuration') }
             }
-
+            handler[key]();
           }}
         >
           <Menu.Item key="1">
@@ -125,9 +129,11 @@ function List() {
             </Button>
           </Menu.Item>
           <Menu.Item key="2">
-            <Button size="small" type="link">
-              编辑
-            </Button>
+            {renderTagInfo(
+              <Button size="small" type="link">
+                编辑
+                </Button>
+            )}
           </Menu.Item>
           <Menu.Item key="3">
             <Button size="small" type="link">
@@ -142,9 +148,9 @@ function List() {
         </Menu>
       );
       return [
-        <a>停用/启用</a>,
-        <a onClick={() => { setUserListVisible(true) }}>用户列表</a>,
-        <Dropdown overlay={menu}>
+        <a key="status">停用/启用</a>,
+        <a key="list" onClick={() => { setUserListVisible(true) }}>用户列表</a>,
+        <Dropdown key="other" overlay={menu}>
           <Button size="small" type="link">
             <EllipsisOutlined />
           </Button>
@@ -168,43 +174,27 @@ function List() {
           </Tabs>
         }
         toolBarRender={() => [
-          <Button
-            type="primary"
-            onClick={() => {
-              setVisible(true);
-            }}
-          >
-            新建
-          </Button>
+          renderTagInfo(
+            <Button type="primary">
+              <PlusOutlined />
+              新建
+            </Button>
+          )
         ]}
         columns={[...(activeTab === '1' ? autoColumns : manualColumns), ...actionOpt]}
         request={() => {
           return Promise.resolve({
             total: 200,
             data: [{
-              id: '001'
+              id: '001',
+              key: '1',
             }],
             success: true,
           });
         }}
       />
-      <Modal
-        visible={visible}
-        title="创建标签"
-        onCancel={() => { setVisible(false) }}
-        onOk={() => { history.push('/tags/list/create') }}
-      >
-        <Form>
-          <FormItem label="标签名称">
-            <Input />
-          </FormItem>
-          <FormItem label="标签描述">
-            <TextArea />
-          </FormItem>
-        </Form>
-      </Modal>
 
-      <Modal
+      < Modal
         visible={userListVisible}
         title="用户列表"
         width={1000}
@@ -245,13 +235,15 @@ function List() {
             return Promise.resolve({
               total: 200,
               data: [{
-                card: '001'
+                card: '001',
+                key: '1',
+                id: '1'
               }],
               success: true,
             });
           }}
         />
-      </Modal>
+      </Modal >
     </>
   )
 }

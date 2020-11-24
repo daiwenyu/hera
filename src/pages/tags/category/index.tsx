@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Input, Button, Modal, Form, Select, Space, Popconfirm } from 'antd';
+import { history } from 'umi';
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -100,29 +101,38 @@ function Category() {
     {
       title: '操作',
       dataIndex: 'option',
-      align: 'right',
+      // align: 'right',
       fixed: 'right',
       width: 240,
       render: (text, record, index) => {
-        const hasTag = true;
+        const hasTag = false;
+        const hasChildren = Array.isArray(record.children) && record.children.length;
         return (
           <Space>
-            <a
-              onClick={() => {
-                setActiveData(record);
-                setNodeVisible(true);
-              }}
-            >
-              新建子节点
-            </a>
-            <a
-              onClick={() => {
-                setActiveData(record);
-                setTagVisible(true);
-              }}
-            >
-              标签管理
-            </a>
+            {
+              hasTag === false ? (
+                <a
+                  onClick={() => {
+                    setActiveData(record);
+                    setNodeVisible(true);
+                  }}
+                >
+                  新建子节点
+                </a>
+              ) : null
+            }
+            {
+              hasChildren ? null : (
+                <a
+                  onClick={() => {
+                    setActiveData(record);
+                    setTagVisible(true);
+                  }}
+                >
+                  标签管理
+                </a>
+              )
+            }
             <a
               onClick={() => {
                 setActiveData(record);
@@ -247,10 +257,17 @@ function Category() {
               title: '操作',
               dataIndex: 'id',
               align: 'center',
+              width: 140,
               render: (text, record, index) => {
                 return (
                   <Space>
-                    <a>标签设置</a>
+                    <a
+                      onClick={() => {
+                        history.push('/tags/list/configuration');
+                      }}
+                    >
+                      标签设置
+                    </a>
                     <Popconfirm
                       title="确认取消关联？"
                     >
