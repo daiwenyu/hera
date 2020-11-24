@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Input, Button, Modal, Form, Select, Space, Popconfirm } from 'antd';
+import {
+  Table, Input, Button, Modal, Form,
+  Select, Space, Popconfirm, Card
+} from 'antd';
 import { history } from 'umi';
 
 const FormItem = Form.Item;
@@ -163,125 +166,127 @@ function Category() {
   }, [nodeVisible]);
 
   return (
-    <Space direction="vertical" style={{ width: '100%' }}>
-      <Button
-        type="primary"
-        onClick={() => { setNodeVisible(true) }}
-      >
-        创建标签
-      </Button>
+    <Card>
+      <Space direction="vertical" style={{ width: '100%' }}>
+        <Button
+          type="primary"
+          onClick={() => { setNodeVisible(true) }}
+        >
+          创建分类
+        </Button>
 
-      <Table
-        rowKey="key"
-        columns={columns}
-        dataSource={data}
-        scroll={{
-          x: 'max-content'
-        }}
-      />
+        <Table
+          rowKey="key"
+          columns={columns}
+          dataSource={data}
+          scroll={{
+            x: 'max-content'
+          }}
+        />
 
-      <Modal
-        forceRender
-        visible={nodeVisible}
-        title={
-          // eslint-disable-next-line no-nested-ternary
-          isModify ? '编辑节点' : (activeData ? `创建子节点（父节点-${activeData.name}）` : "创建父节点")
-        }
-        onCancel={() => { setNodeVisible(false) }}
-      >
-        <Form form={nodeForm} {...formItemLayout}>
-          <FormItem
-            name="cateName"
-            label="分类名称"
-            rules={[{
-              required: true
-            }, {
-              max: 10
-            }]}
-          >
-            <Input />
-          </FormItem>
-          <FormItem
-            name="cateDecs"
-            label="分类描述"
-            rules={[{
-              max: 50
-            }]}
-          >
-            <TextArea rows={3} />
-          </FormItem>
-        </Form>
-      </Modal>
-
-      <Modal
-        forceRender
-        width={800}
-        visible={tagVisible}
-        title="标签管理"
-        onCancel={() => { setTagVisible(false) }}
-      >
-        <Form form={relationForm} >
-          <FormItem label="关联分类">
-            {activeData ? activeData.name : ''}
-          </FormItem>
-          <FormItem label="关联标签">
-            <Select
-              options={[{
-                label: 'a10',
-                value: '1'
+        <Modal
+          forceRender
+          visible={nodeVisible}
+          title={
+            // eslint-disable-next-line no-nested-ternary
+            isModify ? '编辑节点' : (activeData ? `创建子节点（父节点-${activeData.name}）` : "创建父节点")
+          }
+          onCancel={() => { setNodeVisible(false) }}
+        >
+          <Form form={nodeForm} {...formItemLayout}>
+            <FormItem
+              name="cateName"
+              label="分类名称"
+              rules={[{
+                required: true
               }, {
-                label: 'a22',
-                value: '2',
-                disabled: true
-              }, {
-                label: 'a33',
-                value: '3'
+                max: 10
               }]}
-              mode="multiple"
-            />
-          </FormItem>
-          <Table
-            size="small"
-            rowKey="id"
-            dataSource={[{
-              id: '1',
-              name: 'a10'
-            }]}
-            columns={[{
-              title: '已关联标签名称',
-              dataIndex: 'name',
-            }, {
-              title: '标签描述',
-              dataIndex: 'desc',
-            }, {
-              title: '操作',
-              dataIndex: 'id',
-              align: 'center',
-              width: 140,
-              render: (text, record, index) => {
-                return (
-                  <Space>
-                    <a
-                      onClick={() => {
-                        history.push('/tags/list/configuration');
-                      }}
-                    >
-                      标签设置
-                    </a>
-                    <Popconfirm
-                      title="确认取消关联？"
-                    >
-                      <a>取消关联</a>
-                    </Popconfirm>
-                  </Space>
-                )
-              }
-            }]}
-          />
-        </Form>
-      </Modal>
+            >
+              <Input />
+            </FormItem>
+            <FormItem
+              name="cateDecs"
+              label="分类描述"
+              rules={[{
+                max: 50
+              }]}
+            >
+              <TextArea rows={3} />
+            </FormItem>
+          </Form>
+        </Modal>
 
-    </Space>
+        <Modal
+          forceRender
+          width={800}
+          visible={tagVisible}
+          title="标签管理"
+          onCancel={() => { setTagVisible(false) }}
+        >
+          <Form form={relationForm} >
+            <FormItem label="关联分类">
+              {activeData ? activeData.name : ''}
+            </FormItem>
+            <FormItem label="关联标签">
+              <Select
+                options={[{
+                  label: 'a10',
+                  value: '1'
+                }, {
+                  label: 'a22',
+                  value: '2',
+                  disabled: true
+                }, {
+                  label: 'a33',
+                  value: '3'
+                }]}
+                mode="multiple"
+              />
+            </FormItem>
+            <Table
+              size="small"
+              rowKey="id"
+              dataSource={[{
+                id: '1',
+                name: 'a10'
+              }]}
+              columns={[{
+                title: '已关联标签名称',
+                dataIndex: 'name',
+              }, {
+                title: '标签描述',
+                dataIndex: 'desc',
+              }, {
+                title: '操作',
+                dataIndex: 'id',
+                align: 'center',
+                width: 140,
+                render: (text, record, index) => {
+                  return (
+                    <Space>
+                      <a
+                        onClick={() => {
+                          history.push('/tags/list/configuration');
+                        }}
+                      >
+                        标签设置
+                    </a>
+                      <Popconfirm
+                        title="确认取消关联？"
+                      >
+                        <a>取消关联</a>
+                      </Popconfirm>
+                    </Space>
+                  )
+                }
+              }]}
+            />
+          </Form>
+        </Modal>
+
+      </Space>
+    </Card>
   )
 }
 

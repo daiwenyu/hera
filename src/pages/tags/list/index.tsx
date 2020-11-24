@@ -1,21 +1,57 @@
 import React, { useState } from 'react';
 import {
-  Button, Modal, Menu, Form, Tabs,
-  Dropdown, message
+  Button, Modal, Menu, Tabs, Dropdown, message
 } from 'antd';
 import { EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
-import ProForm, { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
+import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import { history } from 'umi';
 
 const { TabPane } = Tabs;
-const FormItem = Form.Item;
 
 function List() {
   const [activeTab, setActiveTab] = useState('1');
   const [userListVisible, setUserListVisible] = useState(false);
   const [activeData, setActiveData] = useState(undefined);
 
+  const renderTagInfo = (trigger) => {
+    return (
+      <ModalForm
+        key="info"
+        title={activeData ? '编辑标签' : "创建标签"}
+        width={480}
+        trigger={trigger}
+        onFinish={async (values) => {
+          console.log(values);
+          // message.success('提交成功！');
+          // history.push('/tags/list/create')
+          // return true;
+        }}
+        onVisibleChange={(visible) => {
+          if (!visible) {
+            setActiveData(undefined);
+          }
+        }}
+      >
+        <ProFormText
+          label="标签名称"
+          name="tagName"
+          rules={[{
+            required: true,
+          }, {
+            max: 10
+          }]}
+        />
+        <ProFormTextArea
+          label="标签描述"
+          name="tagDesc"
+          rules={[{
+            max: 50
+          }]}
+        />
+      </ModalForm>
+    );
+  }
   const spliceColumns = (customizeColumns = []) => [
     {
       title: '标签ID',
@@ -56,6 +92,60 @@ function List() {
       title: '状态',
       dataIndex: 'money6',
     },
+    {
+      title: '操作',
+      dataIndex: 'option',
+      valueType: 'option',
+      align: 'center',
+      fixed: 'right',
+      width: 200,
+      render: (text, row, _, action) => {
+        const menu = (
+          <Menu
+            onClick={({ key }) => {
+              console.log(key)
+              const handler = {
+                2: () => { setActiveData(row) },
+                3: () => { history.push('/tags/list/configuration') }
+              }
+              handler[key]();
+            }}
+          >
+            <Menu.Item key="1">
+              <Button size="small" type="link">
+                复制
+              </Button>
+            </Menu.Item>
+            <Menu.Item key="2">
+              {renderTagInfo(
+                <Button size="small" type="link">
+                  编辑
+                  </Button>
+              )}
+            </Menu.Item>
+            <Menu.Item key="3">
+              <Button size="small" type="link">
+                设置
+              </Button>
+            </Menu.Item>
+            <Menu.Item key="4">
+              <Button size="small" type="link">
+                删除
+              </Button>
+            </Menu.Item>
+          </Menu>
+        );
+        return [
+          <a key="status">停用/启用</a>,
+          <a key="list" onClick={() => { setUserListVisible(true) }}>用户列表</a>,
+          <Dropdown key="other" overlay={menu}>
+            <Button size="small" type="link">
+              <EllipsisOutlined />
+            </Button>
+          </Dropdown>,
+        ]
+      }
+    }
   ];
 
   const autoColumns = spliceColumns();
@@ -64,100 +154,6 @@ function List() {
     dataIndex: 'money12',
     search: false
   }]);
-
-  const renderTagInfo = (trigger) => {
-    return (
-      <ModalForm
-        key="info"
-        title={activeData ? '编辑标签' : "创建标签"}
-        width={480}
-        trigger={trigger}
-        onFinish={async (values) => {
-          console.log(values);
-          // message.success('提交成功！');
-          // history.push('/tags/list/create')
-          // return true;
-        }}
-        onVisibleChange={(visible) => {
-          if (!visible) {
-            setActiveData(undefined);
-          }
-        }}
-      >
-        <ProFormText
-          label="标签名称"
-          name="tagName"
-          rules={[{
-            required: true,
-          }, {
-            max: 10
-          }]}
-        />
-        <ProFormTextArea
-          label="标签描述"
-          name="tagDesc"
-          rules={[{
-            max: 50
-          }]}
-        />
-      </ModalForm>
-    );
-  }
-
-  const actionOpt = [{
-    title: '操作',
-    dataIndex: 'option',
-    valueType: 'option',
-    align: 'center',
-    fixed: 'right',
-    width: 200,
-    render: (text, row, _, action) => {
-      const menu = (
-        <Menu
-          onClick={({ key }) => {
-            console.log(key)
-            const handler = {
-              2: () => { setActiveData(row) },
-              3: () => { history.push('/tags/list/configuration') }
-            }
-            handler[key]();
-          }}
-        >
-          <Menu.Item key="1">
-            <Button size="small" type="link">
-              复制
-            </Button>
-          </Menu.Item>
-          <Menu.Item key="2">
-            {renderTagInfo(
-              <Button size="small" type="link">
-                编辑
-                </Button>
-            )}
-          </Menu.Item>
-          <Menu.Item key="3">
-            <Button size="small" type="link">
-              设置
-            </Button>
-          </Menu.Item>
-          <Menu.Item key="4">
-            <Button size="small" type="link">
-              删除
-            </Button>
-          </Menu.Item>
-        </Menu>
-      );
-      return [
-        <a key="status">停用/启用</a>,
-        <a key="list" onClick={() => { setUserListVisible(true) }}>用户列表</a>,
-        <Dropdown key="other" overlay={menu}>
-          <Button size="small" type="link">
-            <EllipsisOutlined />
-          </Button>
-        </Dropdown>,
-      ]
-    }
-  }]
 
   return (
     <>
@@ -181,7 +177,7 @@ function List() {
             </Button>
           )
         ]}
-        columns={[...(activeTab === '1' ? autoColumns : manualColumns), ...actionOpt]}
+        columns={activeTab === '1' ? autoColumns : manualColumns}
         request={() => {
           return Promise.resolve({
             total: 200,
@@ -194,7 +190,7 @@ function List() {
         }}
       />
 
-      < Modal
+      <Modal
         visible={userListVisible}
         title="用户列表"
         width={1000}
@@ -243,7 +239,7 @@ function List() {
             });
           }}
         />
-      </Modal >
+      </Modal>
     </>
   )
 }
