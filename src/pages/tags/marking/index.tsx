@@ -7,6 +7,7 @@ const FormItem = Form.Item;
 function Category() {
   const [manualVisible, setManualVisible] = useState(false);
   const [taskVisible, setTaskVisible] = useState(false);
+  const [activeData, setActiveData] = useState(undefined);
   const [batchForm] = Form.useForm();
 
   const columns = [{
@@ -42,8 +43,21 @@ function Category() {
     align: 'center',
     width: 100,
     render: (text, row, _, action) => [
-      <a key="detail">详情</a>,
-      <a key="marking" onClick={() => { setManualVisible(true) }}>打标</a>
+      <a key="detail"
+        onClick={() => {
+          console.log('查看详情')
+        }}
+      >
+        详情
+      </a>,
+      <a key="marking"
+        onClick={() => {
+          setManualVisible(true)
+          setActiveData(row);
+        }}
+      >
+        打标
+      </a>
     ]
   }]
 
