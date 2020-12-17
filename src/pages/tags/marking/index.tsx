@@ -45,7 +45,7 @@ function Category() {
     render: (text, row, _, action) => [
       <a key="detail"
         onClick={() => {
-          console.log('查看详情')
+          console.log('查看详情');
         }}
       >
         详情
